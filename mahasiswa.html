@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIAKAD - Data Mahasiswa</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f4f6f9;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+      }
+      .sidebar {
+        width: 230px;
+        min-height: 100vh;
+        background-color: #5b9bd5;
+        color: white;
+        position: sticky;
+        top: 0;
+        left: 0;
+      }
+      .user-profile {
+        padding: 30px 15px 20px;
+        text-align: center;
+      }
+      .user-profile .avatar {
+        width: 65px;
+        height: 65px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #5b9bd5;
+        font-size: 32px;
+        margin: 0 auto 10px;
+      }
+      .user-profile .name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .user-profile .role {
+        font-size: 12px;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+      .nav-menu {
+        margin-top: 10px;
+      }
+      .nav-link {
+        color: white;
+        padding: 12px 20px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .nav-link i {
+        width: 25px;
+        font-size: 16px;
+        margin-right: 8px;
+        text-align: center;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+      }
+      .btn-keluar {
+        background-color: white;
+        color: #d9534f;
+        font-weight: 700;
+        text-align: center;
+        padding: 10px;
+        border-radius: 6px;
+        margin: 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+      .btn-keluar:hover {
+        background-color: #f8f9fa;
+        color: #c9302c;
+      }
+      .main-content {
+        flex-grow: 1;
+        padding: 30px 40px;
+        background-color: #f4f6f9;
+      }
+      .header-title {
+        color: #1f4e79;
+        font-weight: 700;
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+      .table-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        border: none;
+      }
+      .table-card-header {
+        padding: 15px 20px;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .bg-ungu {
+        background-color: #7b68ee;
+      }
+      .table-custom {
+        width: 100%;
+        margin-bottom: 0;
+      }
+      .table-custom th {
+        background-color: #f8f9fa;
+        color: #333;
+        padding: 12px 15px;
+        border-bottom: 2px solid #dee2e6;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .table-custom td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #efefef;
+        font-size: 14px;
+        vertical-align: middle;
+      }
+      .pagination-wrapper {
+        padding: 15px 20px;
+        border-top: 1px solid #dee2e6;
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex">
+      <div class="sidebar d-flex flex-column">
+        <div class="user-profile">
+          <div class="avatar"><i class="fas fa-user"></i></div>
+          <div class="name">M. Ahmad Fauzi</div>
+          <div class="role">ADMIN</div>
+        </div>
+        <div class="nav-menu flex-grow-1">
+          <a href="dashboard.html" class="nav-link"
+            ><i class="fas fa-home"></i> Dashboard</a
+          >
+          <a href="mahasiswa.html" class="nav-link active"
+            ><i class="fas fa-address-card"></i> Data Mahasiswa</a
+          >
+          <a href="dosen.html" class="nav-link"
+            ><i class="fas fa-id-badge"></i> Data Dosen</a
+          >
+          <a href="matakuliah.html" class="nav-link"
+            ><i class="fas fa-book-open"></i> Data Matakuliah</a
+          >
+        </div>
+        <div class="mt-auto">
+          <a href="login.html" class="btn-keluar">KELUAR</a>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="header-title">Kelola Mahasiswa</div>
+
+        <div class="card table-card">
+          <div
+            class="table-card-header bg-ungu d-flex justify-content-between align-items-center"
+          >
+            <span>Daftar Seluruh Mahasiswa</span>
+            <button
+              class="btn btn-light btn-sm fw-bold text-dark"
+              data-bs-toggle="modal"
+              data-bs-target="#modalTambah"
+            >
+              <i class="fas fa-plus me-1"></i> Tambah Data
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th width="10%">No</th>
+                  <th width="30%">NIM</th>
+                  <th>Nama Mahasiswa</th>
+                  <th width="20%" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-mahasiswa-full"></tbody>
+            </table>
+          </div>
+
+          <div
+            class="pagination-wrapper d-flex justify-content-between align-items-center"
+          >
+            <div id="page-info" class="small text-muted">
+              Showing 0 to 0 of 0 entries
+            </div>
+            <nav aria-label="Page navigation">
+              <ul
+                class="pagination pagination-sm mb-0"
+                id="pagination-controls"
+              ></ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalTambah" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-ungu text-white">
+            <h5 class="modal-title">Tambah Mahasiswa</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <form id="formTambah">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">NIM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tambahNIM"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nama Mahasiswa</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tambahNama"
+                  required
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Batal
+              </button>
+              <button type="submit" class="btn text-white bg-ungu">
+                Simpan Data
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalEdit" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-dark">
+            <h5 class="modal-title fw-bold">Edit Mahasiswa</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <form id="formEdit">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">NIM</label>
+                <input
+                  type="text"
+                  class="form-control bg-light"
+                  id="editNIM"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nama Mahasiswa</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editNama"
+                  required
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Batal
+              </button>
+              <button type="submit" class="btn btn-warning fw-bold">
+                Update Data
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      let dataMahasiswa = [];
+      let currentPage = 1;
+      const rowsPerPage = 10;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadDataMahasiswa();
+      });
+
+      // 1. TAMPILKAN DATA
+      function loadDataMahasiswa() {
+        fetch("api/get_mahasiswa.php")
+          .then((res) => res.json())
+          .then((res) => {
+            dataMahasiswa = res.data ? res.data : res;
+            renderTable();
+          })
+          .catch((err) => console.log(err));
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("tbody-mahasiswa-full");
+        tbody.innerHTML = "";
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = Math.min(
+          startIndex + rowsPerPage,
+          dataMahasiswa.length,
+        );
+        const paginatedData = dataMahasiswa.slice(startIndex, endIndex);
+
+        if (paginatedData.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">Belum ada data mahasiswa.</td></tr>`;
+        } else {
+          paginatedData.forEach((mhs, index) => {
+            const nomorUrut = startIndex + index + 1;
+            // Tombol aksi ditambahkan onclick untuk memanggil fungsi Edit & Hapus
+            tbody.innerHTML += `
+                    <tr>
+                        <td>${nomorUrut}</td>
+                        <td class="fw-bold text-secondary">${mhs.nim}</td>
+                        <td>${mhs.nama_mhs}</td>
+                        <td class="text-center">
+                            <button onclick="bukaModalEdit('${mhs.nim}', '${mhs.nama_mhs}')" class="btn btn-sm btn-warning text-white me-1"><i class="fas fa-edit"></i></button>
+                            <button onclick="hapusMahasiswa('${mhs.nim}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+          });
+        }
+
+        document.getElementById("page-info").innerText =
+          `Showing ${dataMahasiswa.length === 0 ? 0 : startIndex + 1} to ${endIndex} of ${dataMahasiswa.length} entries`;
+        setupPaginationControls();
+      }
+
+      // 2. FUNGSI PAGING (Sekarang tombol Next & Prev selalu muncul)
+      function setupPaginationControls() {
+        const controlsWrapper = document.getElementById("pagination-controls");
+        controlsWrapper.innerHTML = "";
+
+        // Hitung total halaman, minimal 1 walau datanya kosong
+        const totalPages = Math.max(
+          1,
+          Math.ceil(dataMahasiswa.length / rowsPerPage),
+        );
+
+        // Tombol PREV
+        controlsWrapper.innerHTML += `
+            <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
+                <a class="page-link" href="#" onclick="${currentPage === 1 ? "return false;" : `changePage(${currentPage - 1})`}">Previous</a>
+            </li>
+        `;
+
+        // Angka 1, 2, 3..
+        for (let i = 1; i <= totalPages; i++) {
+          controlsWrapper.innerHTML += `
+                <li class="page-item ${currentPage === i ? "active" : ""}">
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>
+            `;
+        }
+
+        // Tombol NEXT
+        controlsWrapper.innerHTML += `
+            <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
+                <a class="page-link" href="#" onclick="${currentPage === totalPages ? "return false;" : `changePage(${currentPage + 1})`}">Next</a>
+            </li>
+        `;
+      }
+
+      window.changePage = function (page) {
+        currentPage = page;
+        renderTable();
+      };
+
+      // 3. FUNGSI TAMBAH DATA (POST ke add_mahasiswa.php)
+      document
+        .getElementById("formTambah")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const nim = document.getElementById("tambahNIM").value;
+          const nama = document.getElementById("tambahNama").value;
+
+          fetch("api/add_mahasiswa.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `nim=${nim}&nama=${nama}`,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              alert("Data berhasil ditambahkan!");
+              document.getElementById("formTambah").reset(); // Kosongkan form
+              bootstrap.Modal.getInstance(
+                document.getElementById("modalTambah"),
+              ).hide(); // Tutup pop-up
+              loadDataMahasiswa(); // Refresh tabel
+            })
+            .catch((err) => alert("Gagal menambah data!"));
+        });
+
+      // 4. FUNGSI BUKA MODAL EDIT (Ngeluarin data lama ke dalam pop-up)
+      window.bukaModalEdit = function (nim, nama) {
+        document.getElementById("editNIM").value = nim;
+        document.getElementById("editNama").value = nama;
+        new bootstrap.Modal(document.getElementById("modalEdit")).show();
+      };
+
+      // 5. FUNGSI UPDATE DATA (POST ke update_mahasiswa.php)
+      document
+        .getElementById("formEdit")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const nim = document.getElementById("editNIM").value;
+          const nama = document.getElementById("editNama").value;
+
+          fetch("api/update_mahasiswa.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `nim=${nim}&nama=${nama}`,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              alert("Data berhasil diupdate!");
+              bootstrap.Modal.getInstance(
+                document.getElementById("modalEdit"),
+              ).hide();
+              loadDataMahasiswa();
+            })
+            .catch((err) => alert("Gagal mengupdate data!"));
+        });
+
+      // 6. FUNGSI HAPUS DATA (POST ke delete_mahasiswa.php)
+      window.hapusMahasiswa = function (nim) {
+        if (confirm(`Yakin ingin menghapus mahasiswa dengan NIM ${nim}?`)) {
+          fetch("api/delete_mahasiswa.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `nim=${nim}`,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              alert("Data berhasil dihapus!");
+              loadDataMahasiswa(); // Refresh tabel biar datanya hilang
+            })
+            .catch((err) => alert("Gagal menghapus data!"));
+        }
+      };
+    </script>
+  </body>
+</html>

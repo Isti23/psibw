@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIAKAD - Dashboard Admin</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f4f6f9;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+      }
+      .sidebar {
+        width: 230px;
+        min-height: 100vh;
+        background-color: #5b9bd5;
+        color: white;
+        position: sticky;
+        top: 0;
+        left: 0;
+      }
+      .user-profile {
+        padding: 30px 15px 20px;
+        text-align: center;
+      }
+      .user-profile .avatar {
+        width: 65px;
+        height: 65px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #5b9bd5;
+        font-size: 32px;
+        margin: 0 auto 10px;
+      }
+      .user-profile .name {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .user-profile .role {
+        font-size: 12px;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+      .nav-menu {
+        margin-top: 10px;
+      }
+      .nav-link {
+        color: white;
+        padding: 12px 20px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .nav-link i {
+        width: 25px;
+        font-size: 16px;
+        margin-right: 8px;
+        text-align: center;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+      }
+      .btn-keluar {
+        background-color: white;
+        color: #d9534f;
+        font-weight: 700;
+        text-align: center;
+        padding: 10px;
+        border-radius: 6px;
+        margin: 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+      .btn-keluar:hover {
+        background-color: #f8f9fa;
+        color: #c9302c;
+      }
+      .main-content {
+        flex-grow: 1;
+        padding: 30px 40px;
+        background-color: #f4f6f9;
+      }
+      .header-title {
+        color: #1f4e79;
+        font-weight: 700;
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+      .bg-ungu {
+        background-color: #7b68ee;
+      }
+      .bg-hijau {
+        background-color: #66cdaa;
+      }
+      .bg-kuning {
+        background-color: #bdb76b;
+      }
+      .stat-card {
+        border-radius: 8px;
+        color: white;
+        padding: 20px;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        height: 110px;
+        position: relative;
+      }
+      .stat-card .title {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+      .stat-card .number {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .stat-card .icon {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        font-size: 30px;
+        opacity: 0.9;
+      }
+      .table-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        border: none;
+        display: flex;
+        flex-direction: column;
+      }
+      .table-card-header {
+        padding: 12px;
+        text-align: center;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .table-wrapper {
+        padding: 15px 20px 0;
+      }
+      .table-custom {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      .table-custom th {
+        color: #333;
+        padding: 8px 5px;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .table-custom td {
+        padding: 15px 5px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+      }
+      .placeholder-bar {
+        height: 8px;
+        background-color: #e2e8f0;
+        border-radius: 4px;
+        width: 80%;
+      }
+      .table-card-footer {
+        padding: 0 20px 20px;
+      }
+
+      /* Ubah sedikit agar tombol lihat semua rapi saat jadi tag <a> */
+      .btn-lihat-semua {
+        width: 100%;
+        border-radius: 6px;
+        font-weight: 500;
+        padding: 8px;
+        border: none;
+        font-size: 13px;
+        color: white;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .btn-lihat-semua:hover {
+        opacity: 0.9;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex">
+      <div class="sidebar d-flex flex-column">
+        <div class="user-profile">
+          <div class="avatar"><i class="fas fa-user"></i></div>
+          <div class="name">M. Ahmad Fauzi</div>
+          <div class="role">ADMIN</div>
+        </div>
+
+        <div class="nav-menu flex-grow-1">
+          <a href="dashboard.html" class="nav-link active"
+            ><i class="fas fa-home"></i> Dashboard</a
+          >
+          <a href="mahasiswa.html" class="nav-link"
+            ><i class="fas fa-address-card"></i> Data Mahasiswa</a
+          >
+          <a href="dosen.html" class="nav-link"
+            ><i class="fas fa-id-badge"></i> Data Dosen</a
+          >
+          <a href="matakuliah.html" class="nav-link"
+            ><i class="fas fa-book-open"></i> Data Matakuliah</a
+          >
+        </div>
+
+        <div class="mt-auto">
+          <a href="login.html" class="btn-keluar">KELUAR</a>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="header-title">Selamat datang</div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="stat-card bg-ungu">
+              <div class="title">Total Mahasiswa</div>
+              <div class="number" id="total-mhs">0</div>
+              <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="stat-card bg-hijau">
+              <div class="title">Total Dosen</div>
+              <div class="number" id="total-dsn">0</div>
+              <div class="icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="stat-card bg-kuning">
+              <div class="title">Total Matakuliah</div>
+              <div class="number" id="total-mk">0</div>
+              <div class="icon"><i class="fas fa-book-open"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="table-card">
+              <div class="table-card-header bg-ungu">Data Mahasiswa</div>
+              <div class="table-wrapper">
+                <table class="table-custom">
+                  <thead>
+                    <tr>
+                      <th width="35%">NIM</th>
+                      <th>Nama</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-mhs">
+                    <tr>
+                      <td><div class="placeholder-bar"></div></td>
+                      <td>
+                        <div class="placeholder-bar" style="width: 75%"></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><div class="placeholder-bar"></div></td>
+                      <td>
+                        <div class="placeholder-bar" style="width: 60%"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-card-footer">
+                <a href="mahasiswa.html" class="btn-lihat-semua bg-ungu"
+                  >Lihat Semua</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="table-card">
+              <div class="table-card-header bg-hijau">Data Dosen</div>
+              <div class="table-wrapper">
+                <table class="table-custom">
+                  <thead>
+                    <tr>
+                      <th width="35%">NIM</th>
+                      <th>Nama</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-dsn">
+                    <tr>
+                      <td><div class="placeholder-bar"></div></td>
+                      <td>
+                        <div class="placeholder-bar" style="width: 75%"></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><div class="placeholder-bar"></div></td>
+                      <td>
+                        <div class="placeholder-bar" style="width: 60%"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-card-footer">
+                <a href="dosen.html" class="btn-lihat-semua bg-hijau"
+                  >Lihat Semua</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="table-card">
+              <div class="table-card-header bg-kuning">Data Matakuliah</div>
+              <div class="table-wrapper">
+                <table class="table-custom">
+                  <thead>
+                    <tr>
+                      <th width="35%">NIM</th>
+                      <th>Nama</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-mk">
+                    <tr>
+                      <td><div class="placeholder-bar"></div></td>
+                      <td>
+                        <div class="placeholder-bar" style="width: 75%"></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><div class="placeholder-bar"></div></td>
+                      <td>
+                        <div class="placeholder-bar" style="width: 60%"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-card-footer">
+                <a href="matakuliah.html" class="btn-lihat-semua bg-kuning"
+                  >Lihat Semua</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 1. Fetch Data Mahasiswa (SEKALIGUS MENGHITUNG TOTALNYA)
+        fetch("api/get_mahasiswa.php")
+          .then((response) => response.json())
+          .then((res) => {
+            const tbody = document.getElementById("tbody-mhs");
+            tbody.innerHTML = ""; // Hapus animasi loading (garis abu-abu)
+
+            // Ambil list datanya
+            const listMahasiswa = res.data ? res.data : res;
+
+            // 🔥 INI KUNCINYA: Langsung hitung total baris data yang didapat dari database
+            document.getElementById("total-mhs").innerText =
+              listMahasiswa.length;
+
+            if (listMahasiswa.length > 0) {
+              // MENGAMBIL MAKSIMAL 5 DATA SAJA pakai slice(0, 5)
+              const dataMax5 = listMahasiswa.slice(0, 5);
+
+              dataMax5.forEach((mhs) => {
+                // Pastikan atribut nim dan nama sesuai dengan echo JSON di PHP kamu
+                tbody.innerHTML += `<tr><td>${mhs.nim}</td><td>${mhs.nama_mhs}</td></tr>`;
+              });
+            } else {
+              tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #888;">Belum ada data</td></tr>`;
+            }
+          })
+          .catch((error) => console.error("Error load mahasiswa:", error));
+
+        // 2. Fetch Data Dosen (SEKALIGUS MENGHITUNG TOTALNYA NANTI)
+        // Kalau file get_dosen.php kamu udah siap, hapus tanda komentar (/* dan */) di bawah ini ya!
+
+        /* fetch('api/get_dosen.php')
+            .then(response => response.json())
+            .then(res => {
+                const tbody = document.getElementById('tbody-dsn');
+                tbody.innerHTML = ''; 
+                
+                const listDosen = res.data ? res.data : res; 
+                
+                // Otomatis update angka total dosen di kotak atas
+                document.getElementById('total-dsn').innerText = listDosen.length;
+
+                if(listDosen.length > 0) {
+                    const dataMax5 = listDosen.slice(0, 5);
+                    dataMax5.forEach(dsn => {
+                        tbody.innerHTML += `<tr><td>${dsn.nip}</td><td>${dsn.nama}</td></tr>`;
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #888;">Belum ada data</td></tr>`;
+                }
+            })
+            .catch(error => console.error('Error load dosen:', error));
+        */
+      });
+    </script>
+  </body>
+</html>

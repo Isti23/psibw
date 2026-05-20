@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIAKAD - Login</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        /* PENTING: Ganti path ini sesuai lokasi foto kampus UNRI di folder kamu */
+        background-image: url("foto/back_login.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+      }
+
+      /* Kotak Form Login Utama */
+      .login-card {
+        background-color: rgba(
+          226,
+          242,
+          253,
+          0.9
+        ); /* Warna biru pastel samar transparan */
+        width: 100%;
+        max-width: 460px;
+        padding: 45px 40px;
+        border-radius: 30px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(4px); /* Efek blur halus pada background */
+        text-align: center;
+      }
+
+      /* Bagian Logo & Judul */
+      .logo-container {
+        margin-bottom: 35px;
+      }
+
+      .logo-container i {
+        font-size: 65px;
+        color: #0061ff; /* Warna ikon biru cerah */
+        margin-bottom: 15px;
+      }
+
+      .logo-container h1 {
+        color: #002266;
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+      }
+
+      .logo-container p {
+        color: #002266;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      /* Form Input */
+      .form-group {
+        text-align: left;
+        margin-bottom: 22px;
+      }
+
+      .form-group label {
+        display: block;
+        color: #000000;
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 12px;
+        background-color: #ffffff;
+        outline: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+      }
+
+      /* Tombol Masuk Kapsul */
+      .btn-masuk {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #ffffff;
+        background-color: #0061ff;
+        border: none;
+        border-radius: 50px; /* Bentuk kapsul penuh */
+        cursor: pointer;
+        margin-top: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(0, 97, 255, 0.3);
+      }
+
+      .btn-masuk:hover {
+        background-color: #0052d4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-card">
+      <div class="logo-container">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>SIAKAD</h1>
+        <p>Universitas Riau</p>
+      </div>
+
+      <form id="formLogin">
+        <div class="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            required
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn-masuk">MASUK</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("formLogin")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Mengambil value input dengan benar sebagai teks/string
+          const usernameInput = document
+            .getElementById("username")
+            .value.trim();
+          const passwordInput = document.getElementById("password").value;
+
+          // Validasi dasar agar tidak mengirim data kosong
+          if (!usernameInput || !passwordInput) {
+            alert("Username dan Password tidak boleh kosong!");
+            return;
+          }
+
+          try {
+            // Mengirim data ke API Login backend kamu
+            const response = await fetch("api/login.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `username=${encodeURIComponent(usernameInput)}&password=${encodeURIComponent(passwordInput)}`,
+            });
+
+            // Memastikan respon dari server berupa JSON
+            const result = await response.json();
+
+            if (result.status === "success") {
+              // Di sini proses pengecekan pintunya, Ti:
+              if (result.role === "admin") {
+                window.location.href = "dashboard.html"; // Pintu Admin
+              } else if (result.role === "dosen") {
+                window.location.href = "dashboard_dosen.html"; // Pintu Dosen
+              } else if (result.role === "mahasiswa") {
+                window.location.href = "dashboard_mhs.html"; // Pintu Mahasiswa
+              } else {
+                alert("Role akun tidak dikenali oleh sistem!");
+              }
+            }
+          } catch (error) {
+            console.error("Detail Error:", error);
+            alert("Gagal terhubung ke server login atau format respon salah.");
+          }
+        });
+    </script>
+  </body>
+</html>
