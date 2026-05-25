@@ -119,12 +119,12 @@
         font-weight: 600;
         font-size: 16px;
       }
-      .simpan{
+      .simpan {
         color: white;
         transition: 0.3s;
       }
       .simpan:hover {
-        background-color: #009563; 
+        background-color: #009563;
         color: white;
       }
       .bg-hijau {
@@ -164,11 +164,18 @@
           <div class="role">ADMIN</div>
         </div>
         <div class="nav-menu flex-grow-1">
-          <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
-          <a href="mahasiswa.html" class="nav-link"><i class="fas fa-address-card"></i> Data Mahasiswa</a>
-          <a href="dosen.html" class="nav-link"><i class="fas fa-id-badge"></i> Data Dosen</a>
-          <a href="matakuliah.html" class="nav-link"><i class="fas fa-book-open"></i> Data Matakuliah</a>
-          <a href="jadwal.html" class="nav-link"><i class="fas fa-calendar-alt"></i> Kelola Jadwal</a>
+          <a href="dashboard.html" class="nav-link"
+            ><i class="fas fa-home"></i> Dashboard</a
+          >
+          <a href="mahasiswa.html" class="nav-link"
+            ><i class="fas fa-address-card"></i> Data Mahasiswa</a
+          >
+          <a href="dosen.html" class="nav-link"
+            ><i class="fas fa-id-badge"></i> Data Dosen</a
+          >
+          <a href="matakuliah.html" class="nav-link"
+            ><i class="fas fa-book-open"></i> Data Matakuliah</a
+          >
         </div>
         <div class="mt-auto">
           <a href="login.html" class="btn-keluar">KELUAR</a>
@@ -596,6 +603,28 @@
             );
         }
       };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // 1. Ambil nama file dari URL saat ini (contoh: "matakuliah.html")
+        let currentLocation = window.location.pathname.split("/").pop();
+
+        // Jika path kosong (hanya localhost/siakad/), set default ke dashboard
+        if (currentLocation === "") currentLocation = "dashboard.html";
+
+        // 2. Ambil semua elemen link di dalam menu sidebar
+        const navLinks = document.querySelectorAll(".nav-menu .nav-link");
+
+        // 3. Looping untuk mengecek satu-satu
+        navLinks.forEach((link) => {
+          // Ambil isi dari atribut href (misal: "mahasiswa.html")
+          const linkHref = link.getAttribute("href");
+
+          // Jika href cocok dengan URL saat ini, tambahkan class 'active'
+          if (linkHref === currentLocation) {
+            link.classList.add("active");
+          }
+        });
+      });
     </script>
   </body>
 </html>
