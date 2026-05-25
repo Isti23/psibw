@@ -216,7 +216,7 @@
         </div>
 
         <div class="nav-menu flex-grow-1">
-          <a href="dashboard.html" class="nav-link active"
+          <a href="dashboard.html" class="nav-link"
             ><i class="fas fa-home"></i> Dashboard</a
           >
           <a href="mahasiswa.html" class="nav-link"
@@ -227,6 +227,9 @@
           >
           <a href="matakuliah.html" class="nav-link"
             ><i class="fas fa-book-open"></i> Data Matakuliah</a
+          >
+          <a href="jadwal.html" class="nav-link"
+            ><i class="fas fa-calendar-alt"></i> Kelola Jadwal</a
           >
         </div>
 
@@ -307,7 +310,7 @@
                 <table class="table-custom">
                   <thead>
                     <tr>
-                      <th width="35%">NIM</th>
+                      <th width="35%">NIDN</th>
                       <th>Nama</th>
                     </tr>
                   </thead>
@@ -342,7 +345,7 @@
                 <table class="table-custom">
                   <thead>
                     <tr>
-                      <th width="35%">NIM</th>
+                      <th width="35%">Kode MK</th>
                       <th>Nama</th>
                     </tr>
                   </thead>
@@ -377,26 +380,21 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // 1. Fetch Data Mahasiswa (SEKALIGUS MENGHITUNG TOTALNYA)
+        // 1. Fetch Data Mahasiswa
         fetch("api/get_mahasiswa.php")
           .then((response) => response.json())
           .then((res) => {
             const tbody = document.getElementById("tbody-mhs");
-            tbody.innerHTML = ""; // Hapus animasi loading (garis abu-abu)
+            if (tbody) tbody.innerHTML = "";
 
-            // Ambil list datanya
             const listMahasiswa = res.data ? res.data : res;
 
-            // 🔥 INI KUNCINYA: Langsung hitung total baris data yang didapat dari database
-            document.getElementById("total-mhs").innerText =
-              listMahasiswa.length;
+            const totalMhsEl = document.getElementById("total-mhs");
+            if (totalMhsEl) totalMhsEl.innerText = listMahasiswa.length;
 
             if (listMahasiswa.length > 0) {
-              // MENGAMBIL MAKSIMAL 5 DATA SAJA pakai slice(0, 5)
               const dataMax5 = listMahasiswa.slice(0, 5);
-
               dataMax5.forEach((mhs) => {
-                // Pastikan atribut nim dan nama sesuai dengan echo JSON di PHP kamu
                 tbody.innerHTML += `<tr><td>${mhs.nim}</td><td>${mhs.nama_mhs}</td></tr>`;
               });
             } else {
@@ -405,31 +403,53 @@
           })
           .catch((error) => console.error("Error load mahasiswa:", error));
 
-        // 2. Fetch Data Dosen (SEKALIGUS MENGHITUNG TOTALNYA NANTI)
-        // Kalau file get_dosen.php kamu udah siap, hapus tanda komentar (/* dan */) di bawah ini ya!
+        // 2. Fetch Data Dosen
+        fetch("api/get_dosen.php")
+          .then((response) => response.json())
+          .then((res) => {
+            const tbody = document.getElementById("tbody-dsn");
+            if (tbody) tbody.innerHTML = "";
 
-        /* fetch('api/get_dosen.php')
-            .then(response => response.json())
-            .then(res => {
-                const tbody = document.getElementById('tbody-dsn');
-                tbody.innerHTML = ''; 
-                
-                const listDosen = res.data ? res.data : res; 
-                
-                // Otomatis update angka total dosen di kotak atas
-                document.getElementById('total-dsn').innerText = listDosen.length;
+            const listDosen = res.data ? res.data : res;
 
-                if(listDosen.length > 0) {
-                    const dataMax5 = listDosen.slice(0, 5);
-                    dataMax5.forEach(dsn => {
-                        tbody.innerHTML += `<tr><td>${dsn.nip}</td><td>${dsn.nama}</td></tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #888;">Belum ada data</td></tr>`;
-                }
-            })
-            .catch(error => console.error('Error load dosen:', error));
-        */
+            const totalDsnEl = document.getElementById("total-dsn");
+            if (totalDsnEl) totalDsnEl.innerText = listDosen.length;
+
+            if (listDosen.length > 0) {
+              const dataMax5 = listDosen.slice(0, 5);
+              dataMax5.forEach((dsn) => {
+                tbody.innerHTML += `<tr><td>${dsn.nidn}</td><td>${dsn.nama_dosen}</td></tr>`;
+              });
+            } else {
+              tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #888;">Belum ada data</td></tr>`;
+            }
+          })
+          .catch((error) => console.error("Error load dosen:", error));
+
+        // 3. Fetch Data Matakuliah (INI YANG BARU DITAMBAHIN)
+        fetch("api/get_matakuliah.php")
+          .then((response) => response.json())
+          .then((res) => {
+            // Sesuaikan ID ini dengan ID <tbody> di tabel matakuliah dashboard-mu
+            const tbodyMk = document.getElementById("tbody-mk-dashboard");
+            if (tbodyMk) tbodyMk.innerHTML = "";
+
+            const listMatkul = res.data ? res.data : res;
+
+            // Pastikan id "total-mk" ada di HTML card atas kamu
+            const totalMkEl = document.getElementById("total-mk");
+            if (totalMkEl) totalMkEl.innerText = listMatkul.length;
+
+            if (listMatkul.length > 0) {
+              const dataMax5 = listMatkul.slice(0, 5);
+              dataMax5.forEach((mk) => {
+                tbodyMk.innerHTML += `<tr><td class="fw-bold text-secondary">${mk.kode_mk}</td><td>${mk.nama_mk}</td></tr>`;
+              });
+            } else {
+              tbodyMk.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #888;">Belum ada data matakuliah.</td></tr>`;
+            }
+          })
+          .catch((error) => console.error("Error load matakuliah:", error));
       });
     </script>
   </body>

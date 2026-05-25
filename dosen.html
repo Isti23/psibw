@@ -119,6 +119,14 @@
         font-weight: 600;
         font-size: 16px;
       }
+      .simpan{
+        color: white;
+        transition: 0.3s;
+      }
+      .simpan:hover {
+        background-color: #009563; 
+        color: white;
+      }
       .bg-hijau {
         background-color: #66cdaa;
       }
@@ -156,18 +164,11 @@
           <div class="role">ADMIN</div>
         </div>
         <div class="nav-menu flex-grow-1">
-          <a href="dashboard.html" class="nav-link"
-            ><i class="fas fa-home"></i> Dashboard</a
-          >
-          <a href="mahasiswa.html" class="nav-link"
-            ><i class="fas fa-address-card"></i> Data Mahasiswa</a
-          >
-          <a href="dosen.html" class="nav-link active"
-            ><i class="fas fa-id-badge"></i> Data Dosen</a
-          >
-          <a href="matakuliah.html" class="nav-link"
-            ><i class="fas fa-book-open"></i> Data Matakuliah</a
-          >
+          <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+          <a href="mahasiswa.html" class="nav-link"><i class="fas fa-address-card"></i> Data Mahasiswa</a>
+          <a href="dosen.html" class="nav-link"><i class="fas fa-id-badge"></i> Data Dosen</a>
+          <a href="matakuliah.html" class="nav-link"><i class="fas fa-book-open"></i> Data Matakuliah</a>
+          <a href="jadwal.html" class="nav-link"><i class="fas fa-calendar-alt"></i> Kelola Jadwal</a>
         </div>
         <div class="mt-auto">
           <a href="login.html" class="btn-keluar">KELUAR</a>
@@ -193,18 +194,20 @@
 
           <div class="table-responsive">
             <table class="table-custom table table-hover">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>NIDN</th>
-                  <th>Nama Dosen</th>
-                  <th>Email</th>
-                  <th>No HP</th>
-                  <th>L/P</th>
-                  <th>Alamat</th>
-                  <th class="text-center">Aksi</th>
-                </tr>
-              </thead>
+              <div class="table-responsive">
+                <table class="table-custom table table-hover">
+                  <thead>
+                    <tr>
+                      <th width="5%">No</th>
+                      <th width="20%">NIDN</th>
+                      <th width="30%">Nama Dosen</th>
+                      <th width="30%">Email</th>
+                      <th width="15%" class="text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-dosen-full"></tbody>
+                </table>
+              </div>
               <tbody id="tbody-dosen-full"></tbody>
             </table>
           </div>
@@ -268,8 +271,8 @@
               <div class="mb-3">
                 <label class="form-label">Jenis Kelamin</label>
                 <select class="form-select" id="tambahJK">
-                  <option value="L">Laki-laki</option>
-                  <option value="P">Perempuan</option>
+                  <option value="Laki-Laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -289,7 +292,7 @@
               >
                 Batal
               </button>
-              <button type="submit" class="btn text-white bg-hijau">
+              <button type="submit" class="btn text-white bg-hijau simpan">
                 Simpan
               </button>
             </div>
@@ -340,8 +343,8 @@
               <div class="mb-3">
                 <label class="form-label">Jenis Kelamin</label>
                 <select class="form-select" id="editJK">
-                  <option value="L">Laki-laki</option>
-                  <option value="P">Perempuan</option>
+                  <option value="Laki-Laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -381,22 +384,27 @@
         loadDataDosen();
       });
 
-      // 1. Ambil Data Dosen (Tembak ke api/get_dosen.php kamu)
+      // 1. Ambil Data Dosen
       function loadDataDosen() {
         fetch("api/get_dosen.php")
           .then((res) => res.json())
           .then((res) => {
-            dataDosen = res.data ? res.data : res;
-            renderTable();
+            if (res.status === "success") {
+              dataDosen = res.data ? res.data : res;
+              renderTable();
+            } else {
+              console.log(res.message);
+            }
           })
           .catch((err) => {
             console.log(err);
             document.getElementById("tbody-dosen-full").innerHTML =
-              `<tr><td colspan="8" class="text-center text-danger">Gagal memuat data.</td></tr>`;
+              `<tr><td colspan="5" class="text-center text-danger">Gagal memuat data.</td></tr>`;
           });
       }
 
-      // 2. Render Tabel dengan Paging
+      // 2. Render Tabel
+      // 2. Render Tabel
       function renderTable() {
         const tbody = document.getElementById("tbody-dosen-full");
         tbody.innerHTML = "";
@@ -406,22 +414,20 @@
         const paginatedData = dataDosen.slice(startIndex, endIndex);
 
         if (paginatedData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Belum ada data dosen.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Belum ada data dosen.</td></tr>`;
         } else {
           paginatedData.forEach((dsn, index) => {
             const nomorUrut = startIndex + index + 1;
+
             tbody.innerHTML += `
                     <tr>
                         <td>${nomorUrut}</td>
                         <td class="fw-bold text-secondary">${dsn.nidn}</td>
-                        <td>${dsn.nama_dosen || dsn.nama}</td>
+                        <td>${dsn.nama_dosen || dsn.nama || "-"}</td>
                         <td>${dsn.email || "-"}</td>
-                        <td>${dsn.no_hp || "-"}</td>
-                        <td><span class="badge ${dsn.jenis_kelamin === "L" ? "bg-primary" : "bg-danger"}">${dsn.jenis_kelamin || "-"}</span></td>
-                        <td>${dsn.alamat || "-"}</td>
                         <td class="text-center">
-                            <button onclick="bukaModalEdit('${dsn.nidn}', '${dsn.nama_dosen || dsn.nama}', '${dsn.email || ""}', '${dsn.no_hp || ""}', '${dsn.jenis_kelamin}', '${dsn.alamat || ""}')" class="btn btn-sm btn-warning text-white me-1"><i class="fas fa-edit"></i></button>
-                            <button onclick="hapusDosen('${dsn.nidn}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                            <button onclick="bukaModalEdit('${dsn.nidn}', '${dsn.nama_dosen || dsn.nama || ""}', '${dsn.email || ""}', '${dsn.no_hp || ""}', '${dsn.jenis_kelamin || ""}', '${dsn.alamat || ""}')" class="btn btn-sm btn-warning text-white me-1 mb-1"><i class="fas fa-edit"></i></button>
+                            <button onclick="hapusDosen('${dsn.nidn}')" class="btn btn-sm btn-danger mb-1"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
@@ -465,33 +471,49 @@
         renderTable();
       };
 
-      // 3. Tambah Dosen (POST ke api/add_dosen.php)
+      // 3. Tambah Dosen
       document
         .getElementById("formTambahDosen")
         .addEventListener("submit", function (e) {
           e.preventDefault();
-          const nidn = document.getElementById("tambahNIDN").value;
-          const nama = document.getElementById("tambahNama").value;
-          const email = document.getElementById("tambahEmail").value;
-          const no_hp = document.getElementById("tambahNoHP").value;
-          const jk = document.getElementById("tambahJK").value;
-          const alamat = document.getElementById("tambahAlamat").value;
+
+          const formData = new FormData();
+          formData.append("nidn", document.getElementById("tambahNIDN").value);
+          formData.append("nama", document.getElementById("tambahNama").value);
+          formData.append(
+            "email",
+            document.getElementById("tambahEmail").value,
+          );
+          formData.append("no_hp", document.getElementById("tambahNoHP").value);
+          formData.append(
+            "jenis_kelamin",
+            document.getElementById("tambahJK").value,
+          );
+          formData.append(
+            "alamat",
+            document.getElementById("tambahAlamat").value,
+          );
 
           fetch("api/add_dosen.php", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `nidn=${nidn}&nama=${nama}&email=${email}&no_hp=${no_hp}&jenis_kelamin=${jk}&alamat=${alamat}`,
+            body: formData,
           })
             .then((res) => res.json())
             .then((res) => {
-              alert("Data dosen berhasil disimpan!");
-              document.getElementById("formTambahDosen").reset();
-              bootstrap.Modal.getInstance(
-                document.getElementById("modalTambahDosen"),
-              ).hide();
-              loadDataDosen();
+              if (res.status === "success") {
+                alert(res.message);
+                document.getElementById("formTambahDosen").reset();
+                bootstrap.Modal.getInstance(
+                  document.getElementById("modalTambahDosen"),
+                ).hide();
+                loadDataDosen();
+              } else {
+                alert("Gagal: " + res.message);
+              }
             })
-            .catch((err) => alert("Gagal menambah data dosen!"));
+            .catch((err) =>
+              alert("Terjadi kesalahan sistem saat menambah data dosen!"),
+            );
         });
 
       // 4. Buka Modal Edit
@@ -505,52 +527,73 @@
         new bootstrap.Modal(document.getElementById("modalEditDosen")).show();
       };
 
-      // 5. Update Dosen (POST ke api/update_dosen.php)
+      // 5. Update Dosen
       document
         .getElementById("formEditDosen")
         .addEventListener("submit", function (e) {
           e.preventDefault();
-          const nidn = document.getElementById("editNIDN").value;
-          const nama = document.getElementById("editNama").value;
-          const email = document.getElementById("editEmail").value;
-          const no_hp = document.getElementById("editNoHP").value;
-          const jk = document.getElementById("editJK").value;
-          const alamat = document.getElementById("editAlamat").value;
+
+          const formData = new FormData();
+          formData.append("nidn", document.getElementById("editNIDN").value);
+          formData.append("nama", document.getElementById("editNama").value);
+          formData.append("email", document.getElementById("editEmail").value);
+          formData.append("no_hp", document.getElementById("editNoHP").value);
+          formData.append(
+            "jenis_kelamin",
+            document.getElementById("editJK").value,
+          );
+          formData.append(
+            "alamat",
+            document.getElementById("editAlamat").value,
+          );
 
           fetch("api/update_dosen.php", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `nidn=${nidn}&nama=${nama}&email=${email}&no_hp=${no_hp}&jenis_kelamin=${jk}&alamat=${alamat}`,
+            body: formData,
           })
             .then((res) => res.json())
             .then((res) => {
-              alert("Data dosen berhasil diperbarui!");
-              bootstrap.Modal.getInstance(
-                document.getElementById("modalEditDosen"),
-              ).hide();
-              loadDataDosen();
+              if (res.status === "success") {
+                alert(res.message);
+                bootstrap.Modal.getInstance(
+                  document.getElementById("modalEditDosen"),
+                ).hide();
+                loadDataDosen();
+              } else {
+                alert("Gagal: " + res.message);
+              }
             })
-            .catch((err) => alert("Gagal memperbarui data dosen!"));
+            .catch((err) =>
+              alert("Terjadi kesalahan sistem saat memperbarui data dosen!"),
+            );
         });
 
-      // 6. Hapus Dosen (POST ke api/delete_dosen.php)
+      // 6. Hapus Dosen
       window.hapusDosen = function (nidn) {
         if (
           confirm(
-            `Apakah Anda yakin ingin menghapus dosen dengan NIDN ${nidn}?`,
+            `Apakah Anda yakin ingin menghapus dosen dengan NIDN ${nidn}? Semua jadwalnya juga akan terhapus.`,
           )
         ) {
+          const formData = new FormData();
+          formData.append("nidn", nidn);
+
           fetch("api/delete_dosen.php", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `nidn=${nidn}`,
+            body: formData,
           })
             .then((res) => res.json())
             .then((res) => {
-              alert("Data dosen berhasil dihapus!");
-              loadDataDosen();
+              if (res.status === "success") {
+                alert(res.message);
+                loadDataDosen();
+              } else {
+                alert("Gagal: " + res.message);
+              }
             })
-            .catch((err) => alert("Gagal menghapus data!"));
+            .catch((err) =>
+              alert("Terjadi kesalahan sistem saat menghapus data!"),
+            );
         }
       };
     </script>

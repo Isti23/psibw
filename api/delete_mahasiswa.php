@@ -2,45 +2,43 @@
 header('Content-Type: application/json');
 include 'koneksi.php';
 
-// Menangkap deretan ID dari Javascript berupa format JSON array
-$data = json_decode(file_get_contents("php://input"));
-$ids = isset($data->ids) ? $data->ids : [];
+// Menangkap NIM dari FormData JavaScript
+$nim = $_POST['nim'] ?? '';
 
-if (empty($ids)) {
-    echo json_encode(["status" => "error", "message" => "Tidak ada data mahasiswa yang dipilih!"]);
+if (empty($nim)) {
+    echo json_encode(["status" => "error", "message" => "NIM mahasiswa tidak diterima sistem!"]);
     exit;
 }
-
-// Membersihkan deretan ID agar aman dari SQL Injection
-$ids_clean = array_map('intval', $ids);
-$ids_string = implode(',', $ids_clean);
 
 $conn->begin_transaction();
 
 try {
-    $res = $conn->query("SELECT id_user FROM mahasiswa WHERE id_mhs IN ($ids_string)");
-    $user_ids = [];
-    while ($row = $res->fetch_assoc()) {
-        $user_ids[] = $row['id_user'];
+    // 1. Cari id_mhs dan id_user berdasarkan nim
+    $res = $conn->query("SELECT id_mhs, id_user FROM mahasiswa WHERE nim = '$nim'");
+    if ($res->num_rows == 0) {
+        throw new Exception("Data mahasiswa tidak ditemukan di database.");
     }
-    $conn->query("DELETE FROM mahasiswa WHERE id_mhs IN ($ids_string)");
+    
+    $mhs = $res->fetch_assoc();
+    $id_mhs = $mhs['id_mhs'];
+    $id_user = $mhs['id_user'];
 
-    if (!empty($user_ids)) {
-        $user_ids_string = implode(',', array_map('intval', $user_ids));
-        $conn->query("DELETE FROM users WHERE id_user IN ($user_ids_string)");
-    }
+    // 2. Hapus data KRS terkait id_mhs ini terlebih dahulu (Mencegah error foreign key)
+    $conn->query("DELETE FROM krs WHERE id_mhs = '$id_mhs'");
 
-        // Sebelum commit, tambahkan pengecekan hasil delete
-    $del_mhs = $conn->prepare("DELETE FROM mahasiswa WHERE id_mhs IN ($ids_string)");
-    $del_mhs->execute();
+    // 3. Hapus data di tabel mahasiswa
+    $conn->query("DELETE FROM mahasiswa WHERE id_mhs = '$id_mhs'");
 
-    // ✅ Pastikan ada baris yang terhapus
+    // Pastikan berhasil dihapus
     if ($conn->affected_rows === 0) {
-        throw new Exception("Tidak ada data yang dihapus.");
+        throw new Exception("Gagal menghapus profil mahasiswa.");
     }
+
+    // 4. Hapus data akun di tabel users
+    $conn->query("DELETE FROM users WHERE id_user = '$id_user'");
 
     $conn->commit();
-    echo json_encode(["status" => "success", "message" => "Data mahasiswa terpilih berhasil dihapus dari sistem!"]);
+    echo json_encode(["status" => "success", "message" => "Data mahasiswa berhasil dihapus dari sistem!"]);
 
 } catch (Exception $e) {
     $conn->rollback();
