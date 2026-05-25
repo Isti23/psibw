@@ -189,6 +189,8 @@
               } else {
                 alert("Role akun tidak dikenali oleh sistem!");
               }
+            }else {
+              alert(result.message || "Login gagal, periksa kembali username dan password.");
             }
           } catch (error) {
             console.error("Detail Error:", error);

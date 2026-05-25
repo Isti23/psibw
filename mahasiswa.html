@@ -119,6 +119,17 @@
         font-weight: 600;
         font-size: 16px;
       }
+
+      .simpan{
+        background-color: #7b68ee;
+        color: white;
+        transition: 0.3s;
+      }
+
+      .simpan:hover {
+        background-color: #5140b9; 
+        color: white;
+      }
       .bg-ungu {
         background-color: #7b68ee;
       }
@@ -195,9 +206,11 @@
             <table class="table-custom">
               <thead>
                 <tr>
-                  <th width="10%">No</th>
-                  <th width="30%">NIM</th>
-                  <th>Nama Mahasiswa</th>
+                  <th width="5%">No</th>
+                  <th width="15%">NIM</th>
+                  <th width="25%">Nama Mahasiswa</th>
+                  <th width="10%">Angkatan</th>
+                  <th width="25%">Email</th>
                   <th width="20%" class="text-center">Aksi</th>
                 </tr>
               </thead>
@@ -223,10 +236,10 @@
     </div>
 
     <div class="modal fade" id="modalTambah" tabindex="-1">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header bg-ungu text-white">
-            <h5 class="modal-title">Tambah Mahasiswa</h5>
+            <h5 class="modal-title">Tambah Data Mahasiswa Lengkap</h5>
             <button
               type="button"
               class="btn-close btn-close-white"
@@ -235,23 +248,93 @@
           </div>
           <form id="formTambah">
             <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">NIM</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="tambahNIM"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Nama Mahasiswa</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="tambahNama"
-                  required
-                />
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">NIM</label>
+                  <input type="text" class="form-control" name="nim" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="nama_mhs"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Jenis Kelamin</label>
+                  <select class="form-select" name="jenis_kelamin" required>
+                    <option value="Perempuan">Perempuan</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Tempat Lahir</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="tempat_lahir"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Tanggal Lahir</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="tanggal_lahir"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Semester</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="semester"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Fakultas</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="fakultas"
+                    value="FMIPA"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Jurusan</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="jurusan"
+                    value="Ilmu Komputer"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Prodi</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="prodi"
+                    value="Sistem Informasi"
+                    required
+                  />
+                </div>
               </div>
             </div>
             <div class="modal-footer">
@@ -262,7 +345,7 @@
               >
                 Batal
               </button>
-              <button type="submit" class="btn text-white bg-ungu">
+              <button type="submit" class="btn text-white bg-ungu simpan">
                 Simpan Data
               </button>
             </div>
@@ -272,10 +355,10 @@
     </div>
 
     <div class="modal fade" id="modalEdit" tabindex="-1">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header bg-warning text-dark">
-            <h5 class="modal-title fw-bold">Edit Mahasiswa</h5>
+            <h5 class="modal-title fw-bold">Edit Data Mahasiswa</h5>
             <button
               type="button"
               class="btn-close"
@@ -284,23 +367,109 @@
           </div>
           <form id="formEdit">
             <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">NIM</label>
-                <input
-                  type="text"
-                  class="form-control bg-light"
-                  id="editNIM"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Nama Mahasiswa</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="editNama"
-                  required
-                />
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">NIM</label>
+                  <input
+                    type="text"
+                    class="form-control bg-light"
+                    name="nim"
+                    id="edit_nim"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="nama_mhs"
+                    id="edit_nama"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    id="edit_email"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Jenis Kelamin</label>
+                  <select
+                    class="form-select"
+                    name="jenis_kelamin"
+                    id="edit_jk"
+                    required
+                  >
+                    <option value="Perempuan">Perempuan</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Tempat Lahir</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="tempat_lahir"
+                    id="edit_tempat"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Tanggal Lahir</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="tanggal_lahir"
+                    id="edit_tgl"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Semester</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="semester"
+                    id="edit_smt"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Fakultas</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="fakultas"
+                    id="edit_fakultas"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Jurusan</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="jurusan"
+                    id="edit_jurusan"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Prodi</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="prodi"
+                    id="edit_prodi"
+                    required
+                  />
+                </div>
               </div>
             </div>
             <div class="modal-footer">
@@ -331,7 +500,6 @@
         loadDataMahasiswa();
       });
 
-      // 1. TAMPILKAN DATA
       function loadDataMahasiswa() {
         fetch("api/get_mahasiswa.php")
           .then((res) => res.json())
@@ -354,18 +522,23 @@
         const paginatedData = dataMahasiswa.slice(startIndex, endIndex);
 
         if (paginatedData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">Belum ada data mahasiswa.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada data mahasiswa.</td></tr>`;
         } else {
           paginatedData.forEach((mhs, index) => {
             const nomorUrut = startIndex + index + 1;
-            // Tombol aksi ditambahkan onclick untuk memanggil fungsi Edit & Hapus
+            let digitTahun = mhs.nim ? mhs.nim.substring(0, 2) : "00";
+            let angkatan = "20" + digitTahun;
+            let emailTampil = mhs.email ? mhs.email : "-";
+
             tbody.innerHTML += `
                     <tr>
                         <td>${nomorUrut}</td>
                         <td class="fw-bold text-secondary">${mhs.nim}</td>
                         <td>${mhs.nama_mhs}</td>
+                        <td>${angkatan}</td>
+                        <td>${emailTampil}</td>
                         <td class="text-center">
-                            <button onclick="bukaModalEdit('${mhs.nim}', '${mhs.nama_mhs}')" class="btn btn-sm btn-warning text-white me-1"><i class="fas fa-edit"></i></button>
+                            <button onclick="bukaModalEdit('${mhs.nim}')" class="btn btn-sm btn-warning text-white me-1"><i class="fas fa-edit"></i></button>
                             <button onclick="hapusMahasiswa('${mhs.nim}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
@@ -378,25 +551,19 @@
         setupPaginationControls();
       }
 
-      // 2. FUNGSI PAGING (Sekarang tombol Next & Prev selalu muncul)
       function setupPaginationControls() {
         const controlsWrapper = document.getElementById("pagination-controls");
         controlsWrapper.innerHTML = "";
-
-        // Hitung total halaman, minimal 1 walau datanya kosong
         const totalPages = Math.max(
           1,
           Math.ceil(dataMahasiswa.length / rowsPerPage),
         );
 
-        // Tombol PREV
         controlsWrapper.innerHTML += `
             <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
                 <a class="page-link" href="#" onclick="${currentPage === 1 ? "return false;" : `changePage(${currentPage - 1})`}">Previous</a>
             </li>
         `;
-
-        // Angka 1, 2, 3..
         for (let i = 1; i <= totalPages; i++) {
           controlsWrapper.innerHTML += `
                 <li class="page-item ${currentPage === i ? "active" : ""}">
@@ -404,8 +571,6 @@
                 </li>
             `;
         }
-
-        // Tombol NEXT
         controlsWrapper.innerHTML += `
             <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
                 <a class="page-link" href="#" onclick="${currentPage === totalPages ? "return false;" : `changePage(${currentPage + 1})`}">Next</a>
@@ -418,74 +583,85 @@
         renderTable();
       };
 
-      // 3. FUNGSI TAMBAH DATA (POST ke add_mahasiswa.php)
       document
         .getElementById("formTambah")
         .addEventListener("submit", function (e) {
           e.preventDefault();
-          const nim = document.getElementById("tambahNIM").value;
-          const nama = document.getElementById("tambahNama").value;
+          const formData = new FormData(this);
 
           fetch("api/add_mahasiswa.php", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `nim=${nim}&nama=${nama}`,
+            body: formData,
           })
             .then((res) => res.json())
             .then((res) => {
-              alert("Data berhasil ditambahkan!");
-              document.getElementById("formTambah").reset(); // Kosongkan form
+              alert("Data mahasiswa berhasil ditambahkan!");
+              document.getElementById("formTambah").reset();
               bootstrap.Modal.getInstance(
                 document.getElementById("modalTambah"),
-              ).hide(); // Tutup pop-up
-              loadDataMahasiswa(); // Refresh tabel
+              ).hide();
+              loadDataMahasiswa();
             })
-            .catch((err) => alert("Gagal menambah data!"));
+            .catch((err) => alert("Terjadi kesalahan saat menambah data."));
         });
 
-      // 4. FUNGSI BUKA MODAL EDIT (Ngeluarin data lama ke dalam pop-up)
-      window.bukaModalEdit = function (nim, nama) {
-        document.getElementById("editNIM").value = nim;
-        document.getElementById("editNama").value = nama;
-        new bootstrap.Modal(document.getElementById("modalEdit")).show();
+      window.bukaModalEdit = function (nim) {
+        const mhs = dataMahasiswa.find((m) => m.nim === nim);
+
+        if (mhs) {
+          document.getElementById("edit_nim").value = mhs.nim;
+          document.getElementById("edit_nama").value = mhs.nama_mhs;
+          document.getElementById("edit_email").value = mhs.email;
+          document.getElementById("edit_jk").value = mhs.jenis_kelamin;
+          document.getElementById("edit_tempat").value = mhs.tempat_lahir;
+          document.getElementById("edit_tgl").value = mhs.tanggal_lahir;
+          document.getElementById("edit_smt").value = mhs.semester;
+          document.getElementById("edit_fakultas").value = mhs.fakultas;
+          document.getElementById("edit_jurusan").value = mhs.jurusan; // Masukin jurusan ke form edit
+          document.getElementById("edit_prodi").value = mhs.prodi;
+
+          new bootstrap.Modal(document.getElementById("modalEdit")).show();
+        }
       };
 
-      // 5. FUNGSI UPDATE DATA (POST ke update_mahasiswa.php)
       document
         .getElementById("formEdit")
         .addEventListener("submit", function (e) {
           e.preventDefault();
-          const nim = document.getElementById("editNIM").value;
-          const nama = document.getElementById("editNama").value;
+          const formData = new FormData(this);
 
           fetch("api/update_mahasiswa.php", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `nim=${nim}&nama=${nama}`,
+            body: formData,
           })
             .then((res) => res.json())
             .then((res) => {
-              alert("Data berhasil diupdate!");
+              alert("Data mahasiswa berhasil diupdate!");
               bootstrap.Modal.getInstance(
                 document.getElementById("modalEdit"),
               ).hide();
               loadDataMahasiswa();
             })
-            .catch((err) => alert("Gagal mengupdate data!"));
+            .catch((err) => alert("Terjadi kesalahan saat mengupdate data."));
         });
 
-      // 6. FUNGSI HAPUS DATA (POST ke delete_mahasiswa.php)
       window.hapusMahasiswa = function (nim) {
-        if (confirm(`Yakin ingin menghapus mahasiswa dengan NIM ${nim}?`)) {
+        if (
+          confirm(
+            `Yakin ingin menghapus seluruh data mahasiswa dengan NIM ${nim}?`,
+          )
+        ) {
+          const formData = new FormData();
+          formData.append("nim", nim);
+
           fetch("api/delete_mahasiswa.php", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `nim=${nim}`,
+            body: formData,
           })
             .then((res) => res.json())
             .then((res) => {
               alert("Data berhasil dihapus!");
-              loadDataMahasiswa(); // Refresh tabel biar datanya hilang
+              loadDataMahasiswa();
             })
             .catch((err) => alert("Gagal menghapus data!"));
         }

@@ -1,5 +1,15 @@
 <?php
+// ✅ Tambahkan pengecekan session di SEMUA file API
+session_start();
+if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
+    http_response_code(403);
+    echo json_encode(["status" => "error", "message" => "Akses ditolak."]);
+    exit;
+}
+
+header('Content-Type: application/json');
 include 'koneksi.php';
+// ... sisa kode sama
 
 $totalMhs = $conn->query("SELECT COUNT(*) as total FROM mahasiswa")->fetch_assoc()['total'];
 $totalDosen = $conn->query("SELECT COUNT(*) as total FROM dosen")->fetch_assoc()['total'];

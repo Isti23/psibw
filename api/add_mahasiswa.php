@@ -1,55 +1,55 @@
 <?php
-header('Content-Type: application/json');
-include 'koneksi.php';
-
-$nim = $_POST['nim'] ?? '';
-$nama = $_POST['nama'] ?? '';
-$tempat_lahir = $_POST['tempat_lahir'] ?? '';
-$tanggal_lahir = !empty($_POST['tanggal_lahir']) ? $_POST['tanggal_lahir'] : null;
-$semester = !empty($_POST['semester']) ? intval($_POST['semester']) : 4;
-$fakultas = $_POST['fakultas'] ?? '';
-$jurusan = $_POST['jurusan'] ?? '';
-$prodi = $_POST['prodi'] ?? '';
-$ipk = !empty($_POST['ipk']) ? floatval($_POST['ipk']) : 0.00;
-
-if (empty($nim) || empty($nama)) {
-    echo json_encode(["status" => "error", "message" => "NIM dan Nama Mahasiswa wajib diisi!"]);
+session_start();
+if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
+    http_response_code(403);
+    echo json_encode(["status" => "error", "message" => "Akses ditolak."]);
     exit;
 }
 
-$conn->begin_transaction();
+header('Content-Type: application/json');
+include 'koneksi.php';
 
-try {
-    $check_nim = $conn->query("SELECT id_mhs FROM mahasiswa WHERE nim = '$nim'");
-    if ($check_nim->num_rows > 0) {
-        throw new Exception("NIM sudah terdaftar dalam sistem!");
-    }
+// 1. Tangkap semua data
+$nim = $_POST['nim'] ?? '';
+$nama_mhs = $_POST['nama_mhs'] ?? '';
+$email = $_POST['email'] ?? '';
+$jenis_kelamin = $_POST['jenis_kelamin'] ?? '';
+$tempat_lahir = $_POST['tempat_lahir'] ?? '';
+$tanggal_lahir = $_POST['tanggal_lahir'] ?? '';
+$semester = $_POST['semester'] ?? '';
+$fakultas = $_POST['fakultas'] ?? '';
+$jurusan = $_POST['jurusan'] ?? ''; // <-- Tambahan Jurusan
+$prodi = $_POST['prodi'] ?? '';
 
-    $sql_user = "INSERT INTO users (username, password, role) VALUES ('$nim', '$nim', 'mahasiswa')";
-    $conn->query($sql_user);
+if(empty($nim) || empty($nama_mhs)) {
+    echo json_encode(["status" => "error", "message" => "NIM dan Nama tidak boleh kosong."]);
+    exit;
+}
+
+// 2. Logika bikin password otomatis
+$nama_depan = strtolower(explode(' ', trim($nama_mhs))[0]);
+$tiga_angka_nim = substr($nim, -3);
+$password = $nama_depan . $tiga_angka_nim;
+$role = 'mahasiswa';
+
+// 3. Insert ke database
+$query_user = "INSERT INTO users (username, password, role) VALUES ('$nim', '$password', '$role')";
+
+if ($conn->query($query_user) === TRUE) {
     $id_user = $conn->insert_id;
 
-    $foto = 'default.jpg';
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
-        $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-        $foto = "mhs_" . $nim . "_" . time() . "." . $ext;
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../assets/img/" . $foto);
-    }
-
-    $tgl_lahir_val = $tanggal_lahir ? "'$tanggal_lahir'" : "NULL";
-    $sql_mhs = "INSERT INTO mahasiswa (id_user, nim, nama_mhs, tempat_lahir, tanggal_lahir, semester, fakultas, jurusan, prodi, ipk, foto) 
-                VALUES ('$id_user', '$nim', '$nama', '$tempat_lahir', $tgl_lahir_val, '$semester', '$fakultas', '$jurusan', '$prodi', '$ipk', '$foto')";
+    // Foto otomatis 'default.jpg' dan IPK otomatis 0.00
+    $query_mhs = "INSERT INTO mahasiswa (id_user, nim, nama_mhs, email, jenis_kelamin, tempat_lahir, tanggal_lahir, semester, fakultas, jurusan, prodi, ipk, foto) 
+                  VALUES ('$id_user', '$nim', '$nama_mhs', '$email', '$jenis_kelamin', '$tempat_lahir', '$tanggal_lahir', '$semester', '$fakultas', '$jurusan', '$prodi', 0.00, 'default.jpg')";
     
-    if(!$conn->query($sql_mhs)){
-        throw new Exception("Gagal menyimpan ke tabel mahasiswa: " . $conn->error);
+    if ($conn->query($query_mhs) === TRUE) {
+        echo json_encode(["status" => "success", "message" => "Data berhasil ditambahkan!"]);
+    } else {
+        $conn->query("DELETE FROM users WHERE id_user = '$id_user'");
+        echo json_encode(["status" => "error", "message" => "Gagal menyimpan biodata: " . $conn->error]);
     }
-
-    $conn->commit();
-    echo json_encode(["status" => "success", "message" => "Data mahasiswa berhasil ditambahkan!"]);
-
-} catch (Exception $e) {
-    $conn->rollback();
-    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+} else {
+    echo json_encode(["status" => "error", "message" => "Gagal membuat akun login: " . $conn->error]);
 }
 
 $conn->close();

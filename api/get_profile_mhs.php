@@ -22,12 +22,16 @@ if ($queryMhs && mysqli_num_rows($queryMhs) > 0) {
     $id_mhs = $dataMhs['id_mhs']; // Kita butuh id_mhs ini buat cari matkul di tabel KRS
 
     // 3. Ambil data matakuliah yang diambil (JOIN krs dan matakuliah)
-    $queryKrs = mysqli_query($conn, "
-        SELECT matakuliah.kode_mk, matakuliah.nama_mk 
-        FROM krs 
-        JOIN matakuliah ON krs.id_mk = matakuliah.id_mk 
-        WHERE krs.id_mhs = '$id_mhs'
+    $queryKrs = $conn->prepare("
+    SELECT mk.kode_mk, mk.nama_mk, mk.sks
+    FROM krs k
+    JOIN kelas kls ON k.id_kelas = kls.id_kelas
+    JOIN matakuliah mk ON kls.id_mk = mk.id_mk
+    WHERE k.id_mhs = ? AND k.status = 'disetujui'
     ");
+    $queryKrs->bind_param("i", $id_mhs);
+    $queryKrs->execute();
+    $list_matkul = $queryKrs->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $list_matkul = [];
     if ($queryKrs) {

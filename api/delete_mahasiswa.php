@@ -30,6 +30,15 @@ try {
         $conn->query("DELETE FROM users WHERE id_user IN ($user_ids_string)");
     }
 
+        // Sebelum commit, tambahkan pengecekan hasil delete
+    $del_mhs = $conn->prepare("DELETE FROM mahasiswa WHERE id_mhs IN ($ids_string)");
+    $del_mhs->execute();
+
+    // ✅ Pastikan ada baris yang terhapus
+    if ($conn->affected_rows === 0) {
+        throw new Exception("Tidak ada data yang dihapus.");
+    }
+
     $conn->commit();
     echo json_encode(["status" => "success", "message" => "Data mahasiswa terpilih berhasil dihapus dari sistem!"]);
 
