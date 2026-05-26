@@ -33,7 +33,7 @@ SELECT
     prodi,
     semester
 FROM mahasiswa
-WHERE id_dosen_pa = '$id_dosen'
+WHERE id_dosen = '$id_dosen'
 ORDER BY nim ASC
 ";
 
