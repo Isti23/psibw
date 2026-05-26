@@ -14,7 +14,7 @@
     />
 
     <style>
-      /* CSS Sama persis dengan template utama agar seragam */
+      /* CSS Terpusat & Seragam */
       body {
         background-color: #f4f6f9;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -34,18 +34,20 @@
         padding: 30px 15px 20px;
         text-align: center;
       }
-      .user-profile .avatar {
-        width: 65px;
-        height: 65px;
-        background-color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #5b9bd5;
-        font-size: 32px;
-        margin: 0 auto 10px;
-      }
+    .user-profile .avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 10px;
+  background-color: white;
+}
+
+.user-profile .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
       .user-profile .name {
         font-size: 16px;
         font-weight: 600;
@@ -67,6 +69,7 @@
         align-items: center;
         text-decoration: none;
         transition: 0.2s;
+        cursor: pointer;
       }
       .nav-link i {
         width: 25px;
@@ -107,12 +110,9 @@
         font-size: 26px;
         margin-bottom: 30px;
       }
-      .bg-ungu {
-        background-color: #7b68ee;
-      }
-      .bg-hijau {
-        background-color: #66cdaa;
-      }
+      .bg-ungu { background-color: #7b68ee; }
+      .bg-hijau { background-color: #66cdaa; }
+      
       .stat-card {
         border-radius: 8px;
         color: white;
@@ -139,30 +139,44 @@
         font-size: 30px;
         opacity: 0.9;
       }
+      
+      /* Class Helper untuk menyembunyikan konten */
+      .content-section {
+        display: none;
+      }
+      .content-section.active-section {
+        display: block;
+      }
     </style>
   </head>
   <body>
     <div class="d-flex">
       <div class="sidebar d-flex flex-column">
         <div class="user-profile">
-          <div class="avatar"><i class="fas fa-user-tie"></i></div>
-          <div class="name">Joko Risanto</div>
+         <div class="avatar">
+  <img 
+    id="foto-dosen"
+    src="uploads/dosen/default.png"
+    alt="Foto Dosen"
+  >
+</div>
+          <div class="name" id="dosen-nama">Memuat...</div>
           <div class="role">DOSEN</div>
         </div>
 
         <div class="nav-menu flex-grow-1">
-          <a href="dashboard_dosen.html" class="nav-link active"
-            ><i class="fas fa-home"></i> Dashboard</a
-          >
-          <a href="#" class="nav-link"
-            ><i class="fas fa-calendar-alt"></i> Jadwal Mengajar</a
-          >
-          <a href="#" class="nav-link"
-            ><i class="fas fa-edit"></i> Input Nilai</a
-          >
-          <a href="#" class="nav-link"
-            ><i class="fas fa-users"></i> Mahasiswa Bimbingan</a
-          >
+          <a onclick="switchSection('dashboard')" id="nav-dashboard" class="nav-link active">
+            <i class="fas fa-home"></i> Dashboard
+          </a>
+          <a onclick="switchSection('jadwal')" id="nav-jadwal" class="nav-link">
+            <i class="fas fa-calendar-alt"></i> Jadwal Mengajar
+          </a>
+          <a onclick="switchSection('nilai')" id="nav-nilai" class="nav-link">
+            <i class="fas fa-edit"></i> Input Nilai
+          </a>
+          <a onclick="switchSection('bimbingan')" id="nav-bimbingan" class="nav-link">
+            <i class="fas fa-users"></i> Mahasiswa Bimbingan
+          </a>
         </div>
 
         <div class="mt-auto">
@@ -171,37 +185,323 @@
       </div>
 
       <div class="main-content">
-        <div class="header-title">Selamat datang, Bapak/Ibu Dosen</div>
+        <div class="header-title" id="main-header-title">Selamat datang, Bapak/Ibu Dosen</div>
 
-        <div class="row g-4 mb-4">
-          <div class="col-md-6">
-            <div class="stat-card bg-ungu">
-              <div class="title">Total Matakuliah Diampu</div>
-              <div class="number">3</div>
-              <div class="icon"><i class="fas fa-book-open"></i></div>
+        <div id="section-dashboard" class="content-section active-section">
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <div class="stat-card bg-ungu">
+                <div class="title">Total Matakuliah Diampu</div>
+                <div class="number" id="stat-total-mk">-</div>
+                <div class="icon"><i class="fas fa-book-open"></i></div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="stat-card bg-hijau">
+                <div class="title">Total Mahasiswa Diajar</div>
+                <div class="number" id="stat-total-mhs">-</div>
+                <div class="icon"><i class="fas fa-users"></i></div>
+              </div>
             </div>
           </div>
 
-          <div class="col-md-6">
-            <div class="stat-card bg-hijau">
-              <div class="title">Total Mahasiswa Diajar</div>
-              <div class="number">125</div>
-              <div class="icon"><i class="fas fa-users"></i></div>
+          <div class="alert alert-info border-0 shadow-sm" style="border-radius: 8px">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Pengumuman:</strong> Batas akhir pengisian nilai Ujian Akhir Semester (UAS) adalah tanggal 30 Juni 2026.
+          </div>
+        </div>
+
+        <div id="section-jadwal" class="content-section">
+          <div class="card border-0 shadow-sm" style="border-radius: 8px;">
+            <div class="card-header bg-white py-3">
+              <h5 class="mb-0 text-dark fw-bold"><i class="fas fa-calendar-alt text-primary me-2"></i>Daftar Jadwal Mengajar</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="px-4 py-3">Hari</th>
+                      <th class="py-3">Jam</th>
+                      <th class="py-3">Mata Kuliah</th>
+                      <th class="py-3">SKS</th>
+                      <th class="px-4 py-3 text-end">Ruangan</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-jadwal-dosen">
+                    </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
 
-        <div
-          class="alert alert-info border-0 shadow-sm"
-          style="border-radius: 8px"
-        >
-          <i class="fas fa-info-circle me-2"></i>
-          <strong>Pengumuman:</strong> Batas akhir pengisian nilai Ujian Akhir
-          Semester (UAS) adalah tanggal 30 Juni 2026.
+        <div id="section-nilai" class="content-section">
+          <div class="card border-0 shadow-sm mb-4" style="border-radius: 8px;">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-3">
+                  <label class="fw-bold text-secondary mb-2 d-block">Pilih Mata Kuliah :</label>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-select border-2" id="dropdown-mk-nilai" onchange="loadMahasiswaNilai(this.value)">
+                    <option value="">-- Pilih Mata Kuliah --</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card border-0 shadow-sm" style="border-radius: 8px;">
+            <div class="card-header bg-white py-3">
+              <h5 class="mb-0 text-dark fw-bold"><i class="fas fa-user-edit text-primary me-2"></i>Daftar Nilai Mahasiswa</h5>
+            </div>
+            <div class="card-body p-0">
+              <form id="form-input-nilai">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="px-4 py-3" style="width: 20%;">NIM</th>
+                        <th class="py-3" style="width: 50%;">Nama Mahasiswa</th>
+                        <th class="px-4 py-3 text-center" style="width: 30%;">Nilai Akhir</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-nilai-mahasiswa">
+                      <tr>
+                        <td colspan="3" class="text-center text-muted py-4">Silakan pilih mata kuliah terlebih dahulu.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="p-3 bg-light text-end border-top" id="container-tombol-nilai" style="display: none;">
+                  <button type="submit" class="btn btn-primary px-4 fw-bold"><i class="fas fa-save me-2"></i>Simpan Semua Nilai</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+
+        <div id="section-bimbingan" class="content-section">
+          <div class="card border-0 shadow-sm" style="border-radius: 8px;">
+            <div class="card-header bg-white py-3">
+              <h5 class="mb-0 text-dark fw-bold"><i class="fas fa-users text-primary me-2"></i>Anak Bimbingan Akademik (PA)</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="px-4 py-3">NIM</th>
+                      <th class="py-3">Nama Mahasiswa</th>
+                      <th class="py-3">Program Studi</th>
+                      <th class="px-4 py-3 text-end">Semester</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-bimbingan-dosen">
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // 1. Fungsi Ganti Halaman Section (SPA)
+      function switchSection(sectionName) {
+        // Sembunyikan semua section
+        document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active-section'));
+        // Matikan semua link aktif di sidebar
+        document.querySelectorAll('.nav-menu .nav-link').forEach(link => link.classList.remove('active'));
+        
+        // Aktifkan section & sidebar yang dipilih
+        document.getElementById('section-' + sectionName).classList.add('active-section');
+        document.getElementById('nav-' + sectionName).classList.add('active');
+
+        // Ganti Header Title di atas agar dinamis
+        const titles = {
+          'dashboard': 'Selamat datang, Bapak/Ibu Dosen',
+          'jadwal': 'Jadwal Mengajar Kuliah',
+          'nilai': 'Manajemen Penginputan Nilai Kuliah',
+          'bimbingan': 'Daftar Mahasiswa Bimbingan Akademik'
+        };
+        document.getElementById('main-header-title').innerText = titles[sectionName];
+      }
+
+      // 2. Load Otomatis saat pertama kali dibuka
+      document.addEventListener("DOMContentLoaded", function() {
+        loadDataAwalDosen();
+      });
+
+      // Fungsi mengambil data profil dosen & mengisi statistik dasar
+      function loadDataAwalDosen() {
+        fetch("api/get_jadwal_dosen.php")
+          .then(res => res.json())
+          .then(result => {
+            if(result.status === "success" && result.data.length > 0) {
+              // Set nama dosen di profil sidebar dari data jadwal pertama yang ditarik
+              document.getElementById('dosen-nama').innerText = result.dosen_nama || "Dosen Pengampu";
+              if(result.foto){
+  document.getElementById('foto-dosen').src =
+    'foto/dosen/' + result.foto;
+}
+              
+              // Isi nilai statistik ringkas di dashboard utama
+              document.getElementById('stat-total-mk').innerText = result.data.length + " Kelas";
+              document.getElementById('stat-total-mhs').innerText = result.total_mahasiswa_all || "125";
+              
+              // Langsung isi tabel Jadwal Mengajar biar ready pas diklik
+              isiTabelJadwal(result.data);
+              // Langsung isi dropdown Pilihan Matakuliah di bagian nilai
+              isiDropdownNilai(result.data);
+            } else {
+              document.getElementById('dosen-nama').innerText = "Dosen";
+              document.getElementById('stat-total-mk').innerText = "0";
+            }
+          })
+          .catch(err => {
+            console.error("Gagal memuat info awal dosen:", err);
+            document.getElementById('dosen-nama').innerText = "Gagal Connect";
+          });
+
+        // Panggil fungsi memuat daftar anak bimbingan akademik
+        loadMahasiswaBimbingan();
+      }
+
+      // 3. Mengisi data ke tabel jadwal mengajar
+      function isiTabelJadwal(daftarJadwal) {
+        const tbody = document.getElementById("tbody-jadwal-dosen");
+        tbody.innerHTML = "";
+
+        daftarJadwal.forEach(jadwal => {
+          const jamMulai = jadwal.jam_mulai.substring(0, 5);
+          const jamSelesai = jadwal.jam_selesai.substring(0, 5);
+
+          tbody.innerHTML += `
+            <tr>
+              <td class="px-4 fw-bold text-secondary">${jadwal.hari}</td>
+              <td><span class="badge bg-light text-dark border">${jamMulai} - ${jamSelesai} WIB</span></td>
+              <td>
+                <div class="fw-bold text-dark">${jadwal.nama_mk}</div>
+                <small class="text-muted">${jadwal.kode_mk}</small>
+              </td>
+              <td>${jadwal.sks} SKS</td>
+              <td class="px-4 text-end fw-bold text-primary"><i class="fas fa-door-open me-1 small"></i>${jadwal.ruangan}</td>
+            </tr>
+          `;
+        });
+      }
+
+      // 4. Mengisi Dropdown Pilihan Mata Kuliah untuk Input Nilai
+      function isiDropdownNilai(daftarJadwal) {
+        const select = document.getElementById("dropdown-mk-nilai");
+        // Gunakan set untuk menghindari duplikasi mata kuliah yang sama jika mengajar beberapa kelas
+        const mkDilihat = new Set();
+
+        daftarJadwal.forEach(jadwal => {
+          if (!mkDilihat.has(jadwal.id_mk)) {
+            mkDilihat.add(jadwal.id_mk);
+            select.innerHTML += `<option value="${jadwal.id_jadwal}">${jadwal.nama_mk} (${jadwal.kode_mk})</option>`;
+          }
+        });
+      }
+
+      // 5. Mengambil & menampilkan mahasiswa berdasarkan mata kuliah yang dipilih di dropdown
+      function loadMahasiswaNilai(idJadwal) {
+        const tbody = document.getElementById("tbody-nilai-mahasiswa");
+        const tombolContainer = document.getElementById("container-tombol-nilai");
+
+        if(!idJadwal) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-4">Silakan pilih mata kuliah terlebih dahulu.</td></tr>`;
+          tombolContainer.style.display = "none";
+          return;
+        }
+
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div> Memuat mahasiswa kelas...</td></tr>`;
+
+        // Fetch mengambil list mahasiswa pengambil kelas tersebut
+        fetch(`api/get_mhs_by_jadwal.php?id_jadwal=${idJadwal}`)
+          .then(res => res.json())
+          .then(result => {
+            tbody.innerHTML = "";
+            if(result.status === "success" && result.data.length > 0) {
+          result.data.forEach(mhs => {
+  tbody.innerHTML += `
+    <tr>
+      <td class="px-4 fw-bold text-secondary">${mhs.nim}</td>
+      <td class="fw-bold text-dark">${mhs.nama_mhs}</td>
+      <td>-</td>
+      <td class="px-4 text-end fw-bold">
+        <span class="badge bg-primary">-</span>
+      </td>
+    </tr>
+  `;
+});
+              tombolContainer.style.display = "block"; // Munculkan tombol simpan jika ada mahasiswa
+            } else {
+              tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted py-4">Belum ada mahasiswa yang mengambil mata kuliah ini.</td></tr>`;
+              tombolContainer.style.display = "none";
+            }
+          })
+          .catch(err => {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger py-4">Gagal memuat data dari api/get_mhs_by_jadwal.php</td></tr>`;
+            tombolContainer.style.display = "none";
+          });
+      }
+
+      // 6. Menyimpan inputan nilai massal ke database
+      document.getElementById("form-input-nilai").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch("api/update_nilai.php", {
+          method: "POST",
+          body: formData
+        })
+        .then(res => res.json())
+        .then(result => {
+          if(result.status === "success") {
+            alert("Berhasil! Semua data nilai mahasiswa telah diperbarui.");
+          } else {
+            alert("Gagal menyimpan: " + result.message);
+          }
+        })
+        .catch(err => alert("Terjadi gangguan sistem saat menyimpan nilai. Periksa file api/update_nilai.php"));
+      });
+
+      // 7. Mengambil daftar mahasiswa bimbingan akademik (PA)
+      function loadMahasiswaBimbingan() {
+        const tbody = document.getElementById("tbody-bimbingan-dosen");
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div> Memuat...</td></tr>`;
+
+        fetch("api/get_mhs_bimbingan.php")
+          .then(res => res.json())
+          .then(result => {
+            tbody.innerHTML = "";
+            if(result.status === "success" && result.data.length > 0) {
+              result.data.forEach(mhs => {
+                tbody.innerHTML += `
+                  <tr>
+                    <td class="px-4 fw-bold text-secondary">${mhs.nim}</td>
+                    <td class="fw-bold text-dark">${mhs.nama_mhs}</td>
+                    <td>${mhs.prodi || 'Informatika'}</td>
+                    <td class="px-4 text-end fw-bold"><span class="badge bg-primary">Smt ${mhs.semester}</span></td>
+                  </tr>
+                `;
+              });
+            } else {
+              tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">Anda belum memiliki daftar anak bimbingan akademik.</td></tr>`;
+            }
+          })
+          .catch(err => {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-4">Gagal terhubung ke api/get_mhs_bimbingan.php</td></tr>`;
+          });
+      }
+    </script>
   </body>
 </html>
