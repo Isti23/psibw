@@ -14,7 +14,7 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'dosen') {
 $id_user = $_SESSION['id_user'];
 
 $getDosen = $conn->query("
-    SELECT id_dosen, nama_dosen, foto
+    SELECT id_dosen, nama_dosen, foto, nidn, email
     FROM dosen
     WHERE id_user = '$id_user'
 ");
@@ -24,6 +24,8 @@ $dosen = $getDosen->fetch_assoc();
 $id_dosen = $dosen['id_dosen'];
 $nama_dosen = $dosen['nama_dosen'];
 $foto = $dosen['foto'];
+$nidn = $dosen['nidn'];
+$email = $dosen['email'];
 
 $query = "
 SELECT
@@ -67,6 +69,8 @@ echo json_encode([
     "status" => "success",
     "dosen_nama" => $nama_dosen,
     "foto" => $foto,
+    "nidn" => $nidn,
+    "email" => $email,
     "total_mahasiswa_all" => $totalMahasiswa,
     "data" => $data
 ]);

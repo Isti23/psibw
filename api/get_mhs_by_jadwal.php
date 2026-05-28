@@ -1,49 +1,31 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-
 include 'koneksi.php';
 
-if (!isset($_SESSION['id_user'])) {
+if (!isset($_GET['id_jadwal'])) {
     echo json_encode([
         "status" => "error",
-        "message" => "Session habis"
+        "message" => "ID Jadwal tidak ditemukan"
     ]);
     exit;
 }
 
-$id_jadwal = $_GET['id_jadwal'] ?? '';
-
-if ($id_jadwal == '') {
-    echo json_encode([
-        "status" => "error",
-        "message" => "ID jadwal kosong"
-    ]);
-    exit;
-}
+$id_jadwal = $_GET['id_jadwal'];
 
 $query = "
-SELECT
-    k.id_krs,
-    k.nilai,
+SELECT 
+    m.id_mhs,
     m.nim,
     m.nama_mhs
 FROM krs k
 JOIN mahasiswa m
     ON k.id_mhs = m.id_mhs
 WHERE k.id_jadwal = '$id_jadwal'
-ORDER BY m.nim ASC
+ORDER BY m.nama_mhs ASC
 ";
 
 $result = $conn->query($query);
-
-if (!$result) {
-    echo json_encode([
-        "status" => "error",
-        "message" => $conn->error
-    ]);
-    exit;
-}
 
 $data = [];
 
