@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
+
   <style>
     body {
       background-color: #f4f6f9;
@@ -187,6 +188,55 @@
       border-radius: 50%;
       border: 3px solid #dee2e6;
     }
+
+    .dashboard-card {
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      transition: 0.3s;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .stat-mini-card {
+      border-radius: 16px;
+      padding: 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-mini-card i {
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      font-size: 35px;
+      opacity: 0.2;
+    }
+
+    .bg-blue {
+      background: linear-gradient(135deg, #4e73df, #224abe);
+    }
+
+    .bg-green {
+      background: linear-gradient(135deg, #1cc88a, #13855c);
+    }
+
+    .bg-orange {
+      background: linear-gradient(135deg, #f6c23e, #dda20a);
+    }
+
+    .bg-red {
+      background: linear-gradient(135deg, #e74a3b, #be2617);
+    }
+
+    .dashboard-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+    }
   </style>
 </head>
 
@@ -256,104 +306,201 @@
 
         <div class="row g-4">
 
-          <!-- KIRI -->
+          <!-- PROFILE -->
 
-          <div class="col-lg-8">
+          <div class="col-lg-4">
 
-            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
-              <div class="card-body">
+            <div class="card dashboard-card h-100">
 
-                <div class="row align-items-center">
+              <div class="card-body text-center p-4">
 
-                  <div class="col-md-3 text-center">
-                    <img id="foto-profile-dosen" src="foto/default.png" class="profile-img-large">
+                <img id="foto-profile-dosen" src="foto/default.png" class="profile-img-large mb-3">
+
+                <h4 class="fw-bold" id="nama-profile-dosen">
+                  Nama Dosen
+                </h4>
+
+                <p class="text-muted mb-4">
+                  Dosen Sistem Informasi
+                </p>
+
+                <div class="text-start">
+
+                  <div class="mb-3">
+                    <small class="text-secondary">
+                      NIDN
+                    </small>
+
+                    <div class="fw-bold" id="nidn-dosen">
+                      -
+                    </div>
                   </div>
 
-                  <div class="col-md-9">
+                  <div>
+                    <small class="text-secondary">
+                      Email
+                    </small>
 
-                    <h4 class="fw-bold mb-1" id="nama-profile-dosen">
-                      Nama Dosen
-                    </h4>
-
-                    <p class="text-muted mb-3">
-                      Dosen Program Studi Sistem Informasi
-                    </p>
-
-                    <div class="row">
-
-                      <div class="col-md-6 mb-2">
-                        <small class="text-secondary">
-                          NIDN
-                        </small>
-
-                        <div class="fw-bold" id="nidn-dosen">
-                          -
-                        </div>
-                      </div>
-
-                      <div class="col-md-6 mb-2">
-                        <small class="text-secondary">
-                          Email
-                        </small>
-
-                        <div class="fw-bold" id="email-dosen">
-                          -
-                        </div>
-                      </div>
-
+                    <div class="fw-bold" id="email-dosen">
+                      -
                     </div>
-
                   </div>
 
                 </div>
 
               </div>
-            </div>
 
-            <!-- PENGUMUMAN -->
-
-            <div class="alert alert-info border-0 shadow-sm mt-4" style="border-radius: 10px;">
-              <i class="fas fa-info-circle me-2"></i>
-
-              <strong>Pengumuman:</strong>
-
-              Batas akhir pengisian nilai UAS adalah tanggal 30 Juni 2026.
             </div>
 
           </div>
 
-          <!-- KANAN -->
+          <!-- STAT -->
 
-          <div class="col-lg-4">
+          <div class="col-lg-8">
 
-            <div class="stat-card bg-ungu mb-4">
+            <div class="row g-3">
 
-              <div class="title">
-                Total Mata Kuliah Diampu
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-blue">
+
+                  <div class="small">
+                    Mata Kuliah
+                  </div>
+
+                  <h2 class="fw-bold" id="stat-total-mk">
+                    0
+                  </h2>
+
+                  <i class="fas fa-book"></i>
+
+                </div>
+
               </div>
 
-              <div class="number" id="stat-total-mk">
-                0
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-green">
+
+                  <div class="small">
+                    Mahasiswa
+                  </div>
+
+                  <h2 class="fw-bold" id="stat-total-mhs">
+                    0
+                  </h2>
+
+                  <i class="fas fa-users"></i>
+
+                </div>
+
               </div>
 
-              <div class="icon">
-                <i class="fas fa-book-open"></i>
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-orange">
+
+                  <div class="small">
+                    Jadwal Hari Ini
+                  </div>
+
+                  <h2 class="fw-bold">
+                    3
+                  </h2>
+
+                  <i class="fas fa-calendar"></i>
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-red">
+
+                  <div class="small">
+                    Nilai Pending
+                  </div>
+
+                  <h2 class="fw-bold">
+                    12
+                  </h2>
+
+                  <i class="fas fa-edit"></i>
+
+                </div>
+
               </div>
 
             </div>
 
-            <div class="stat-card bg-hijau">
+          </div>
 
-              <div class="title">
-                Total Mahasiswa Diajar
+          <!-- MATA KULIAH -->
+
+          <div class="col-lg-7">
+
+            <div class="card dashboard-card">
+
+              <div class="card-body">
+
+                <div class="d-flex justify-content-between mb-3">
+
+                  <div class="dashboard-section-title">
+                    Mata Kuliah Diampu
+                  </div>
+
+                  <button class="btn btn-sm btn-primary" onclick="switchSection('jadwal')">
+                    Lihat Semua
+                  </button>
+
+                </div>
+
+                <div id="dashboard-mk-list">
+
+                  <div class="text-muted">
+                    Memuat data...
+                  </div>
+
+                </div>
+
               </div>
 
-              <div class="number" id="stat-total-mhs">
-                0
-              </div>
+            </div>
 
-              <div class="icon">
-                <i class="fas fa-users"></i>
+          </div>
+
+          <!-- QUICK MENU -->
+
+          <div class="col-lg-5">
+
+            <div class="card dashboard-card">
+
+              <div class="card-body">
+
+                <div class="dashboard-section-title mb-4">
+                  Menu Cepat
+                </div>
+
+                <div class="d-grid gap-3">
+
+                  <button class="btn btn-primary btn-lg" onclick="switchSection('nilai')">
+                    <i class="fas fa-edit me-2"></i>
+                    Input Nilai
+                  </button>
+
+                  <button class="btn btn-outline-primary btn-lg" onclick="switchSection('jadwal')">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Jadwal Mengajar
+                  </button>
+
+                  <button class="btn btn-outline-secondary btn-lg" onclick="switchSection('bimbingan')">
+                    <i class="fas fa-users me-2"></i>
+                    Mahasiswa Bimbingan
+                  </button>
+
+                </div>
+
               </div>
 
             </div>
@@ -504,7 +651,7 @@
                   </tbody>
 
                 </table>
-              
+
 
               </div>
 
@@ -663,6 +810,36 @@
       loadMahasiswaBimbingan();
     }
 
+    function isiDashboardMK(data) {
+
+      const container =
+        document.getElementById("dashboard-mk-list");
+
+      container.innerHTML = "";
+
+      data.slice(0, 5).forEach(mk => {
+
+        container.innerHTML += `
+
+      <div class="border rounded-4 p-3 mb-3">
+
+        <div class="fw-bold">
+          ${mk.nama_mk}
+        </div>
+
+        <div class="text-muted small">
+          ${mk.hari} • 
+          ${mk.jam_mulai.substring(0, 5)} -
+          ${mk.jam_selesai.substring(0, 5)}
+        </div>
+
+      </div>
+
+    `;
+
+      });
+
+    }
     function isiTabelJadwal(data) {
 
       const tbody = document.getElementById('tbody-jadwal-dosen');
@@ -779,47 +956,48 @@
 
               tbody.innerHTML += `
 
-          <tr>
+<tr>
 
-            <td class="fw-bold text-secondary">
-              ${mhs.nim}
-            </td>
+  <td class="fw-bold text-secondary">
+    ${mhs.nim}
+  </td>
 
-            <td class="fw-bold text-dark">
-              ${mhs.nama_mhs}
-            </td>
+  <td class="fw-bold text-dark">
+    ${mhs.nama_mhs}
+  </td>
 
-            <td class="text-center">
+  <td class="text-center">
 
-              <input 
-                type="hidden"
-                name="id_mhs[]"
-                value="${mhs.id_mhs}"
-              >
+    <input 
+      type="hidden"
+      name="id_krs[]"
+      value="${mhs.id_krs}"
+    >
 
-              <input 
-                type="number"
-                name="nilai[]"
-                class="form-control"
-                min="0"
-                max="100"
-                placeholder="0 - 100"
-                oninput="updateGrade(this)"
-              >
+    <input 
+      type="number"
+      name="nilai[]"
+      class="form-control"
+      min="0"
+      max="100"
+      value="${mhs.nilai_akhir ? mhs.nilai_akhir : ''}"
+      placeholder="0 - 100"
+      oninput="updateGrade(this)"
+    >
 
-            </td>
+  </td>
 
-            <td class="text-center">
+  <td class="text-center">
 
-              <span class="badge bg-primary grade-text">
-                -
-              </span>
+    <span class="badge bg-primary grade-text">
+      ${mhs.huruf_mutu ? mhs.huruf_mutu : '-'}
+    </span>
 
-            </td>
+  </td>
 
-          </tr>
+</tr>
 
-          `;
+`;
 
             });
 
@@ -876,19 +1054,31 @@
 
         e.preventDefault();
 
+        // ✅ POPUP KONFIRMASI
+        if (!confirm("Yakin ingin menyimpan nilai ke database?")) {
+          return;
+        }
+
         const formData = new FormData(e.target);
 
         fetch("api/simpan_nilai.php", {
           method: "POST",
           body: formData
         })
-
           .then(res => res.json())
-
           .then(result => {
+
+            console.log(result);
 
             alert(result.message);
 
+            // optional: reload data setelah simpan
+            // loadMahasiswaNilai(document.getElementById('dropdown-mk-nilai').value);
+
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Terjadi kesalahan saat menyimpan data");
           });
 
       }

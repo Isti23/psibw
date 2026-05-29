@@ -15,6 +15,9 @@ $id_jadwal = $_GET['id_jadwal'];
 
 $query = "
 SELECT 
+    k.id_krs,
+    k.nilai_akhir,
+    k.huruf_mutu,
     m.id_mhs,
     m.nim,
     m.nama_mhs
