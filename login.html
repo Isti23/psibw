@@ -155,37 +155,32 @@
         .addEventListener("submit", async function (e) {
           e.preventDefault();
 
-          // Mengambil value input dengan benar sebagai teks/string
           const usernameInput = document
             .getElementById("username")
             .value.trim();
           const passwordInput = document.getElementById("password").value;
 
-          // Validasi dasar agar tidak mengirim data kosong
           if (!usernameInput || !passwordInput) {
             alert("Username dan Password tidak boleh kosong!");
             return;
           }
 
           try {
-            // Mengirim data ke API Login backend kamu
             const response = await fetch("api/login.php", {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: `username=${encodeURIComponent(usernameInput)}&password=${encodeURIComponent(passwordInput)}`,
             });
 
-            // Memastikan respon dari server berupa JSON
             const result = await response.json();
 
             if (result.status === "success") {
-              // Di sini proses pengecekan pintunya, Ti:
               if (result.role === "admin") {
-                window.location.href = "dashboard.html"; // Pintu Admin
+                window.location.href = "dashboard.html"; 
               } else if (result.role === "dosen") {
-                window.location.href = "dashboard_dosen.html"; // Pintu Dosen
+                window.location.href = "dashboard_dosen.html"; 
               } else if (result.role === "mahasiswa") {
-                window.location.href = "dashboard_mhs.html"; // Pintu Mahasiswa
+                window.location.href = "dashboard_mhs.html"; 
               } else {
                 alert("Role akun tidak dikenali oleh sistem!");
               }
