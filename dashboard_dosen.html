@@ -1,207 +1,1453 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SIAKAD - Dashboard Dosen</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
 
-    <style>
-      /* CSS Sama persis dengan template utama agar seragam */
-      body {
-        background-color: #f4f6f9;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        overflow-x: hidden;
-      }
-      .sidebar {
-        width: 230px;
-        min-height: 100vh;
-        background-color: #5b9bd5;
-        color: white;
-        position: sticky;
-        top: 0;
-        left: 0;
-      }
-      .user-profile {
-        padding: 30px 15px 20px;
-        text-align: center;
-      }
-      .user-profile .avatar {
-        width: 65px;
-        height: 65px;
-        background-color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #5b9bd5;
-        font-size: 32px;
-        margin: 0 auto 10px;
-      }
-      .user-profile .name {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 2px;
-      }
-      .user-profile .role {
-        font-size: 12px;
-        font-weight: 400;
-        opacity: 0.9;
-      }
-      .nav-menu {
-        margin-top: 10px;
-      }
-      .nav-link {
-        color: white;
-        padding: 12px 20px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        transition: 0.2s;
-      }
-      .nav-link i {
-        width: 25px;
-        font-size: 16px;
-        margin-right: 8px;
-        text-align: center;
-      }
-      .nav-link:hover,
-      .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.2);
-        font-weight: 600;
-      }
-      .btn-keluar {
-        background-color: white;
-        color: #d9534f;
-        font-weight: 700;
-        text-align: center;
-        padding: 10px;
-        border-radius: 6px;
-        margin: 20px;
-        text-decoration: none;
-        display: block;
-        font-size: 14px;
-        transition: 0.3s;
-      }
-      .btn-keluar:hover {
-        background-color: #f8f9fa;
-        color: #c9302c;
-      }
-      .main-content {
-        flex-grow: 1;
-        padding: 30px 40px;
-        background-color: #f4f6f9;
-      }
-      .header-title {
-        color: #1f4e79;
-        font-weight: 700;
-        font-size: 26px;
-        margin-bottom: 30px;
-      }
-      .bg-ungu {
-        background-color: #7b68ee;
-      }
-      .bg-hijau {
-        background-color: #66cdaa;
-      }
-      .stat-card {
-        border-radius: 8px;
-        color: white;
-        padding: 20px;
-        border: none;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        height: 110px;
-        position: relative;
-      }
-      .stat-card .title {
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 15px;
-      }
-      .stat-card .number {
-        font-size: 32px;
-        font-weight: 700;
-        line-height: 1;
-      }
-      .stat-card .icon {
-        position: absolute;
-        right: 20px;
-        bottom: 20px;
-        font-size: 30px;
-        opacity: 0.9;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="d-flex">
-      <div class="sidebar d-flex flex-column">
-        <div class="user-profile">
-          <div class="avatar"><i class="fas fa-user-tie"></i></div>
-          <div class="name">Joko Risanto</div>
-          <div class="role">DOSEN</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SIAKAD - Dashboard Dosen</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 230px;
+      min-height: 100vh;
+      background-color: #5b9bd5;
+      color: white;
+      position: sticky;
+      top: 0;
+      left: 0;
+    }
+
+    .user-profile {
+      padding: 30px 15px 20px;
+      text-align: center;
+    }
+
+    .user-profile .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 10px;
+      background-color: white;
+    }
+
+    .user-profile .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-profile .name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .user-profile .role {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .nav-menu {
+      margin-top: 10px;
+    }
+
+    .nav-link {
+      color: white;
+      padding: 12px 20px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link i {
+      width: 25px;
+      margin-right: 8px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+    }
+
+    .btn-keluar {
+      background-color: white;
+      color: #d9534f;
+      font-weight: 700;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 20px;
+      text-decoration: none;
+      display: block;
+      font-size: 14px;
+    }
+
+    .btn-keluar:hover {
+      background-color: #f8f9fa;
+      color: #c9302c;
+    }
+
+    /* MAIN CONTENT */
+
+    .main-content {
+      flex-grow: 1;
+      padding: 30px;
+      background-color: #f4f6f9;
+    }
+
+    .header-title {
+      color: #1f4e79;
+      font-weight: 700;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    /* CARD STAT */
+
+    .bg-ungu {
+      background-color: #7b68ee;
+    }
+
+    .bg-hijau {
+      background-color: #66cdaa;
+    }
+
+    .stat-card {
+      border-radius: 12px;
+      color: white;
+      padding: 20px;
+      height: 120px;
+      position: relative;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-card .title {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .stat-card .number {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .stat-card .icon {
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      font-size: 32px;
+      opacity: 0.8;
+    }
+
+    /* SECTION */
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active-section {
+      display: block;
+    }
+
+    /* TABLE */
+
+    .table th {
+      font-size: 14px;
+    }
+
+    .table td {
+      vertical-align: middle;
+    }
+
+    /* PROFILE CARD */
+
+    .profile-img-large {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #dee2e6;
+    }
+
+    .dashboard-card {
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      transition: 0.3s;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .stat-mini-card {
+      border-radius: 16px;
+      padding: 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-mini-card i {
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      font-size: 35px;
+      opacity: 0.2;
+    }
+
+    .bg-blue {
+      background: linear-gradient(135deg, #4e73df, #224abe);
+    }
+
+    .bg-green {
+      background: linear-gradient(135deg, #1cc88a, #13855c);
+    }
+
+    .bg-orange {
+      background: linear-gradient(135deg, #f6c23e, #dda20a);
+    }
+
+    .bg-red {
+      background: linear-gradient(135deg, #e74a3b, #be2617);
+    }
+
+    .dashboard-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .dashboard-card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-mini-card {
+      border-radius: 18px;
+      padding: 24px;
+      min-height: 140px;
+    }
+
+    #dashboard-mk-list .border {
+      border: 1px solid #eef1f5 !important;
+      transition: 0.2s;
+    }
+
+    #dashboard-mk-list .border:hover {
+      background: #f8fbff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="d-flex">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar d-flex flex-column">
+
+      <div class="user-profile">
+
+        <div class="avatar">
+          <img id="foto-dosen" src="foto/default.png" alt="Foto Dosen">
         </div>
 
-        <div class="nav-menu flex-grow-1">
-          <a href="dashboard_dosen.html" class="nav-link active"
-            ><i class="fas fa-home"></i> Dashboard</a
-          >
-          <a href="#" class="nav-link"
-            ><i class="fas fa-calendar-alt"></i> Jadwal Mengajar</a
-          >
-          <a href="#" class="nav-link"
-            ><i class="fas fa-edit"></i> Input Nilai</a
-          >
-          <a href="#" class="nav-link"
-            ><i class="fas fa-users"></i> Mahasiswa Bimbingan</a
-          >
+        <div class="name" id="dosen-nama">
+          Memuat...
         </div>
 
-        <div class="mt-auto">
-          <a href="login.html" class="btn-keluar">KELUAR</a>
+        <div class="role">
+          DOSEN
         </div>
+
       </div>
 
-      <div class="main-content">
-        <div class="header-title">Selamat datang, Bapak/Ibu Dosen</div>
+      <div class="nav-menu flex-grow-1">
 
-        <div class="row g-4 mb-4">
-          <div class="col-md-6">
-            <div class="stat-card bg-ungu">
-              <div class="title">Total Matakuliah Diampu</div>
-              <div class="number">3</div>
-              <div class="icon"><i class="fas fa-book-open"></i></div>
-            </div>
-          </div>
+        <a onclick="switchSection('dashboard')" id="nav-dashboard" class="nav-link active">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a onclick="switchSection('profil')" id="nav-profil" class="nav-link">
+          <i class="fas fa-user-cog"></i> Profil Saya
+        </a>
 
-          <div class="col-md-6">
-            <div class="stat-card bg-hijau">
-              <div class="title">Total Mahasiswa Diajar</div>
-              <div class="number">125</div>
-              <div class="icon"><i class="fas fa-users"></i></div>
-            </div>
-          </div>
-        </div>
+        <a onclick="switchSection('jadwal')" id="nav-jadwal" class="nav-link">
+          <i class="fas fa-calendar-alt"></i> Jadwal Mengajar
+        </a>
 
-        <div
-          class="alert alert-info border-0 shadow-sm"
-          style="border-radius: 8px"
-        >
-          <i class="fas fa-info-circle me-2"></i>
-          <strong>Pengumuman:</strong> Batas akhir pengisian nilai Ujian Akhir
-          Semester (UAS) adalah tanggal 30 Juni 2026.
-        </div>
+        <a onclick="switchSection('nilai')" id="nav-nilai" class="nav-link">
+          <i class="fas fa-edit"></i> Input Nilai
+        </a>
+
+        <a onclick="switchSection('bimbingan')" id="nav-bimbingan" class="nav-link">
+          <i class="fas fa-users"></i> Mahasiswa Bimbingan
+        </a>
+
       </div>
+
+      <div class="mt-auto">
+        <a href="login.html" class="btn-keluar">
+          KELUAR
+        </a>
+      </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+      <div class="header-title" id="main-header-title">
+        Selamat Datang, Bapak/Ibu Dosen
+      </div>
+
+
+      <!-- DASHBOARD -->
+
+      <div id="section-dashboard" class="content-section active-section">
+
+        <div class="row g-4">
+
+          <!-- PROFILE -->
+
+          <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+              <div class="card-body text-center p-4">
+
+                <img id="foto-profile-dosen" src="foto/default.png" class="profile-img-large mb-3">
+
+                <h4 class="fw-bold mb-1" id="nama-profile-dosen">
+                  Nama Dosen
+                </h4>
+
+                <p class="text-muted small mb-4">
+                  Dosen Sistem Informasi
+                </p>
+
+                <div class="text-start">
+
+                  <div class="mb-3">
+                    <small class="text-secondary">
+                      NIDN
+                    </small>
+
+                    <div class="fw-semibold" id="nidn-dosen">
+                      -
+                    </div>
+                  </div>
+
+                  <div>
+                    <small class="text-secondary">
+                      Email
+                    </small>
+
+                    <div class="fw-semibold" id="email-dosen">
+                      -
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT CONTENT -->
+
+          <div class="col-lg-8">
+
+            <div class="row g-3 mb-3">
+
+              <!-- CARD MK -->
+
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-blue">
+
+                  <div class="small">
+                    Mata Kuliah
+                  </div>
+
+                  <h2 class="fw-bold" id="stat-total-mk">
+                    0
+                  </h2>
+
+                  <i class="fas fa-book"></i>
+
+                </div>
+
+              </div>
+
+              <!-- CARD MAHASISWA -->
+
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-green">
+
+                  <div class="small">
+                    Total Mahasiswa
+                  </div>
+
+                  <h2 class="fw-bold" id="stat-total-mhs">
+                    0
+                  </h2>
+
+                  <i class="fas fa-users"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- QUICK MENU -->
+
+            <div class="card dashboard-card">
+
+              <div class="card-body">
+
+                <div class="dashboard-section-title mb-4">
+                  Layanan Akademik
+                </div>
+
+                <div class="row g-3">
+
+                  <div class="col-md-4">
+
+                    <button class="btn btn-primary w-100 py-3" onclick="switchSection('nilai')">
+
+                      <i class="fas fa-edit mb-2 d-block"></i>
+
+                      Input Nilai
+
+                    </button>
+
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <button class="btn btn-outline-primary w-100 py-3" onclick="switchSection('jadwal')">
+
+                      <i class="fas fa-calendar-alt mb-2 d-block"></i>
+
+                      Jadwal
+
+                    </button>
+
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <button class="btn btn-outline-secondary w-100 py-3" onclick="switchSection('bimbingan')">
+
+                      <i class="fas fa-users mb-2 d-block"></i>
+
+                      Bimbingan
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- MATA KULIAH -->
+
+          <div class="col-12">
+
+            <div class="card dashboard-card">
+
+              <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                  <div class="dashboard-section-title">
+                    Mata Kuliah Diampu
+                  </div>
+
+                  <button class="btn btn-sm btn-primary" onclick="switchSection('jadwal')">
+
+                    Lihat Semua
+
+                  </button>
+
+                </div>
+
+                <div id="dashboard-mk-list">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- JADWAL -->
+
+      <div id="section-jadwal" class="content-section">
+
+        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+
+          <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+              <i class="fas fa-calendar-alt text-primary me-2"></i>
+              Daftar Jadwal Mengajar
+            </h5>
+          </div>
+
+          <div class="card-body">
+            <div class="table-responsive">
+
+              <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                  <tr>
+                    <th>Hari</th>
+                    <th>Jam</th>
+                    <th>Mata Kuliah</th>
+                    <th>SKS</th>
+                    <th class="text-end">Ruangan</th>
+                  </tr>
+
+                </thead>
+
+                <tbody id="tbody-jadwal-dosen">
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- NILAI -->
+
+      <div id="section-nilai" class="content-section">
+
+        <!-- PILIH MATA KULIAH -->
+
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 10px;">
+
+          <div class="card-body">
+
+            <div class="row align-items-center">
+
+              <div class="col-md-3">
+                <label class="fw-bold">
+                  Pilih Mata Kuliah :
+                </label>
+              </div>
+
+              <div class="col-md-6">
+
+                <select class="form-select" id="dropdown-mk-nilai" onchange="loadMahasiswaNilai(this.value)">
+
+                  <option value="">
+                    -- Pilih Mata Kuliah --
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- TABEL NILAI -->
+
+        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+
+          <div class="card-header bg-white py-3">
+
+            <h5 class="fw-bold mb-0">
+              <i class="fas fa-user-edit text-primary me-2"></i>
+              Daftar Nilai Mahasiswa
+            </h5>
+
+          </div>
+
+          <div class="card-body">
+
+            <form id="form-input-nilai">
+
+              <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                  <thead class="table-light">
+
+                    <tr>
+
+                      <th style="width:20%;">
+                        NIM
+                      </th>
+
+                      <th style="width:40%;">
+                        Nama Mahasiswa
+                      </th>
+
+                      <th class="text-center" style="width:20%;">
+                        Nilai
+                      </th>
+
+                      <th class="text-center" style="width:20%;">
+                        Grade
+                      </th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody id="tbody-nilai-mahasiswa">
+
+                    <tr>
+
+                      <td colspan="4" class="text-center text-muted py-4">
+
+                        Silakan pilih mata kuliah terlebih dahulu.
+
+                      </td>
+
+                    </tr>
+
+                  </tbody>
+
+                </table>
+
+
+              </div>
+
+              <!-- TOMBOL SIMPAN -->
+
+              <div class="p-3 bg-light text-end border-top">
+
+                <button type="submit" class="btn btn-primary">
+
+                  <i class="fas fa-save me-2"></i>
+                  Simpan Nilai
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- BIMBINGAN -->
+
+      <div id="section-bimbingan" class="content-section">
+
+        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+
+          <div class="card-header bg-white py-3">
+
+            <h5 class="fw-bold mb-0">
+              <i class="fas fa-users text-primary me-2"></i>
+              Mahasiswa Bimbingan
+            </h5>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+              <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                  <tr>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Program Studi</th>
+                    <th class="text-end">Semester</th>
+                  </tr>
+
+                </thead>
+
+                <tbody id="tbody-bimbingan-dosen">
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PROFIL DOSEN -->
+
+      <div id="section-profil" class="content-section">
+
+        <div class="row g-4">
+
+          <!-- BIODATA -->
+
+          <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm" style="border-radius:16px;">
+
+              <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+
+                <h5 class="fw-bold mb-0">
+                  <i class="fas fa-user text-primary me-2"></i>
+                  Biodata Dosen
+                </h5>
+
+                <button class="btn btn-primary btn-sm" id="btn-edit-profil">
+                  <i class="fas fa-pen me-2"></i>
+                  Edit Profil
+                </button>
+
+              </div>
+
+              <div class="card-body">
+
+                <form id="form-edit-profil">
+
+                  <div class="row g-3">
+
+                    <div class="col-md-6">
+                      <label class="form-label">NIDN</label>
+                      <input type="text" class="form-control" id="profil-nidn" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Nama Dosen</label>
+                      <input type="text" class="form-control profil-input" id="profil-nama" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-control profil-input" id="profil-email" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">No HP</label>
+                      <input type="text" class="form-control profil-input" id="profil-hp" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Jenis Kelamin</label>
+
+                      <select class="form-select profil-input" id="profil-jk" disabled>
+                        <option value="Laki-Laki">Laki-Laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label">Alamat</label>
+
+                      <textarea class="form-control profil-input" rows="3" id="profil-alamat" readonly></textarea>
+                    </div>
+
+                  </div>
+
+                  <!-- TOMBOL SIMPAN -->
+
+                  <div class="text-end mt-4 d-none" id="action-profil">
+
+                    <button type="button" class="btn btn-secondary me-2" id="btn-batal-edit">
+                      Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save me-2"></i>
+                      Simpan Perubahan
+                    </button>
+
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm" style="border-radius:16px;">
+
+              <div class="card-header bg-white py-3">
+
+                <h5 class="fw-bold mb-0">
+                  <i class="fas fa-lock text-primary me-2"></i>
+                  Ganti Password
+                </h5>
+
+              </div>
+
+              <div class="card-body">
+
+                <form id="form-password">
+
+                  <div class="mb-3">
+
+                    <label class="form-label">
+                      Password Baru
+                    </label>
+
+                    <input type="password" class="form-control" id="password-baru" required>
+
+                  </div>
+
+                  <div class="mb-3">
+
+                    <label class="form-label">
+                      Konfirmasi Password
+                    </label>
+
+                    <input type="password" class="form-control" id="konfirmasi-password" required>
+
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-100">
+
+                    <i class="fas fa-save me-2"></i>
+                    Simpan Password
+
+                  </button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+    function switchSection(sectionName) {
+
+      document.querySelectorAll('.content-section')
+        .forEach(sec => sec.classList.remove('active-section'));
+
+      document.querySelectorAll('.nav-link')
+        .forEach(link => link.classList.remove('active'));
+
+      document.getElementById('section-' + sectionName)
+        .classList.add('active-section');
+
+      document.getElementById('nav-' + sectionName)
+        .classList.add('active');
+
+      const titles = {
+        dashboard: 'Selamat Datang, Bapak/Ibu Dosen',
+        jadwal: 'Jadwal Mengajar',
+        nilai: 'Input Nilai Mahasiswa',
+        bimbingan: 'Mahasiswa Bimbingan',
+        profil: 'Profil Dosen'
+      };
+
+      document.getElementById('main-header-title').innerText =
+        titles[sectionName];
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      loadDataAwalDosen();
+      loadProfilDosen();
+    });
+
+    function loadDataAwalDosen() {
+
+      fetch("api/get_jadwal_dosen.php")
+
+        .then(res => res.json())
+
+        .then(result => {
+
+          if (result.status === "success") {
+
+            document.getElementById('dosen-nama').innerText =
+              result.dosen_nama;
+
+            document.getElementById('nama-profile-dosen').innerText =
+              result.dosen_nama;
+
+            if (result.foto) {
+
+              document.getElementById('foto-dosen').src =
+                'foto/' + result.foto;
+
+              document.getElementById('foto-profile-dosen').src =
+                'foto/' + result.foto;
+            }
+
+            document.getElementById('nidn-dosen').innerText =
+              result.nidn || '-';
+
+            document.getElementById('email-dosen').innerText =
+              result.email || '-';
+
+            document.getElementById('stat-total-mk').innerText =
+              result.data.length;
+
+            document.getElementById('stat-total-mhs').innerText =
+              result.total_mahasiswa_all || 0;
+
+            isiTabelJadwal(result.data);
+
+            isiDropdownNilai(result.data);
+
+            isiDashboardMK(result.data);
+
+          }
+
+        })
+
+        .catch(err => {
+          console.log(err);
+        });
+
+      loadMahasiswaBimbingan();
+    }
+
+
+    function isiDashboardMK(data) {
+
+      const container =
+        document.getElementById("dashboard-mk-list");
+
+      container.innerHTML = "";
+
+      data.slice(0, 5).forEach(mk => {
+
+        container.innerHTML += `
+
+<div class="border rounded-4 p-3 mb-3 d-flex justify-content-between align-items-center">
+
+  <div>
+
+    <div class="fw-bold">
+      ${mk.nama_mk}
+    </div>
+
+    <div class="text-muted small">
+      ${mk.hari} • 
+      ${mk.jam_mulai.substring(0, 5)} -
+      ${mk.jam_selesai.substring(0, 5)}
+    </div>
+
+  </div>
+
+  <span class="badge bg-primary px-3 py-2">
+    ${mk.sks} SKS
+  </span>
+
+</div>
+
+`;
+
+      });
+
+    }
+
+    function isiTabelJadwal(data) {
+
+      const tbody = document.getElementById('tbody-jadwal-dosen');
+
+      tbody.innerHTML = "";
+
+      data.forEach(jadwal => {
+
+        tbody.innerHTML += `
+    
+      <tr>
+
+        <td>${jadwal.hari}</td>
+
+        <td>
+          ${jadwal.jam_mulai.substring(0, 5)}
+          -
+          ${jadwal.jam_selesai.substring(0, 5)}
+        </td>
+
+        <td>
+          <div class="fw-bold">${jadwal.nama_mk}</div>
+          <small class="text-muted">${jadwal.kode_mk}</small>
+        </td>
+
+        <td>${jadwal.sks} SKS</td>
+
+        <td class="text-end">
+          ${jadwal.ruangan}
+        </td>
+
+      </tr>
+
+    `;
+
+      });
+
+    }
+
+    function isiDropdownNilai(data) {
+
+      const select =
+        document.getElementById('dropdown-mk-nilai');
+
+      const mkDilihat = new Set();
+
+      data.forEach(jadwal => {
+
+        if (!mkDilihat.has(jadwal.id_mk)) {
+
+          mkDilihat.add(jadwal.id_mk);
+
+          select.innerHTML += `
+          
+            <option value="${jadwal.id_jadwal}">
+              ${jadwal.nama_mk}
+            </option>
+          
+          `;
+        }
+
+      });
+
+    }
+    function updateGrade(input) {
+
+      const nilai = parseInt(input.value);
+
+      const gradeCell =
+        input.closest('tr').querySelector('.grade-text');
+
+      let grade = "-";
+
+      if (nilai >= 85) {
+        grade = "A";
+      } else if (nilai >= 80) {
+        grade = "A-";
+      } else if (nilai >= 75) {
+        grade = "B+";
+      } else if (nilai >= 70) {
+        grade = "B";
+      } else if (nilai >= 65) {
+        grade = "B-";
+      } else if (nilai >= 60) {
+        grade = "C+";
+      } else if (nilai >= 55) {
+        grade = "C";
+      } else if (nilai >= 40) {
+        grade = "D";
+      } else if (nilai >= 0) {
+        grade = "E";
+      }
+
+      gradeCell.innerText = grade;
+    }
+
+    function loadMahasiswaNilai(idJadwal) {
+
+      const tbody =
+        document.getElementById("tbody-nilai-mahasiswa");
+
+      if (!idJadwal) return;
+
+      fetch(`api/get_mhs_by_jadwal.php?id_jadwal=${idJadwal}`)
+
+        .then(res => res.json())
+
+        .then(result => {
+
+          tbody.innerHTML = "";
+
+          if (result.status === "success") {
+
+            result.data.forEach(mhs => {
+
+              tbody.innerHTML += `
+
+<tr>
+
+  <td class="fw-bold text-secondary">
+    ${mhs.nim}
+  </td>
+
+  <td class="fw-bold text-dark">
+    ${mhs.nama_mhs}
+  </td>
+
+  <td class="text-center">
+
+    <input 
+      type="hidden"
+      name="id_krs[]"
+      value="${mhs.id_krs}"
+    >
+
+    <input 
+      type="number"
+      name="nilai[]"
+      class="form-control"
+      min="0"
+      max="100"
+      value="${mhs.nilai_akhir ? mhs.nilai_akhir : ''}"
+      placeholder="0 - 100"
+      oninput="updateGrade(this)"
+    >
+
+  </td>
+
+  <td class="text-center">
+
+    <span class="badge bg-primary grade-text">
+      ${mhs.huruf_mutu ? mhs.huruf_mutu : '-'}
+    </span>
+
+  </td>
+
+</tr>
+
+`;
+
+            });
+
+          }
+
+        });
+
+    }
+    function loadMahasiswaBimbingan() {
+
+      const tbody =
+        document.getElementById("tbody-bimbingan-dosen");
+
+      fetch("api/get_mhs_bimbingan.php")
+
+        .then(res => res.json())
+
+        .then(result => {
+
+          tbody.innerHTML = "";
+
+          if (result.status === "success") {
+
+            result.data.forEach(mhs => {
+
+              tbody.innerHTML += `
+              
+                <tr>
+
+                  <td>${mhs.nim}</td>
+
+                  <td>${mhs.nama_mhs}</td>
+
+                  <td>${mhs.prodi}</td>
+
+                  <td class="text-end">
+                    Semester ${mhs.semester}
+                  </td>
+
+                </tr>
+              
+              `;
+
+            });
+
+          }
+
+        });
+
+    }
+
+    function loadProfilDosen() {
+
+      fetch("api/get_profil_dosen.php")
+
+        .then(res => res.json())
+
+        .then(result => {
+
+          if (result.status === "success") {
+
+            const d = result.data;
+
+            document.getElementById('profil-nidn').value = d.nidn;
+            document.getElementById('profil-nama').value = d.nama_dosen;
+            document.getElementById('profil-email').value = d.email;
+            document.getElementById('profil-hp').value = d.no_hp;
+            document.getElementById('profil-jk').value = d.jenis_kelamin;
+            document.getElementById('profil-alamat').value = d.alamat;
+
+          }
+
+        });
+
+    }
+    document.addEventListener("submit", function (e) {
+
+      if (e.target.id === "form-input-nilai") {
+
+        e.preventDefault();
+
+        // ✅ POPUP KONFIRMASI
+        if (!confirm("Yakin ingin menyimpan nilai ke database?")) {
+          return;
+        }
+
+        const formData = new FormData(e.target);
+
+        fetch("api/simpan_nilai.php", {
+          method: "POST",
+          body: formData
+        })
+          .then(res => res.json())
+          .then(result => {
+
+            console.log(result);
+
+            alert(result.message);
+            loadProfilDosen();
+            loadDataAwalDosen();
+
+
+            // optional: reload data setelah simpan
+            // loadMahasiswaNilai(document.getElementById('dropdown-mk-nilai').value);
+
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Terjadi kesalahan saat menyimpan data");
+          });
+
+      }
+
+    });
+
+    document.getElementById("form-edit-profil")
+      .addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append(
+          "nama",
+          document.getElementById("profil-nama").value
+        );
+
+        formData.append(
+          "email",
+          document.getElementById("profil-email").value
+        );
+
+        formData.append(
+          "hp",
+          document.getElementById("profil-hp").value
+        );
+
+        formData.append(
+          "jk",
+          document.getElementById("profil-jk").value
+        );
+
+        formData.append(
+          "alamat",
+          document.getElementById("profil-alamat").value
+        );
+
+        fetch("api/update_profil_dosen.php", {
+          method: "POST",
+          body: formData
+        })
+
+          .then(res => res.json())
+
+          .then(result => {
+            alert(result.message);
+            loadProfilDosen();
+            loadDataAwalDosen();
+
+            // balik readonly lagi
+            profilInputs.forEach(input => {
+
+              if (input.tagName === "SELECT") {
+                input.disabled = true;
+              } else {
+                input.setAttribute("readonly", true);
+              }
+
+            });
+
+            actionProfil.classList.add("d-none");
+
+            btnEditProfil.classList.remove("d-none");
+
+          });
+
+      });
+
+    const formPassword = document.getElementById("form-password");
+
+    if (formPassword) {
+
+      formPassword.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const pass =
+          document.getElementById("password-baru").value;
+
+        const confirmPass =
+          document.getElementById("konfirmasi-password").value;
+
+        if (pass !== confirmPass) {
+          alert("Konfirmasi password tidak cocok");
+          return;
+        }
+
+        const formData = new FormData();
+
+        formData.append("password", pass);
+
+        fetch("api/update_password_dosen.php", {
+          method: "POST",
+          body: formData
+        })
+
+          .then(res => res.json())
+
+          .then(result => {
+            alert(result.message);
+
+            formPassword.reset();
+          });
+
+      });
+
+    }
+
+    // ===========================
+    // TOGGLE EDIT PROFIL
+    // ===========================
+
+    const btnEditProfil =
+      document.getElementById("btn-edit-profil");
+
+    const btnBatalEdit =
+      document.getElementById("btn-batal-edit");
+
+    const actionProfil =
+      document.getElementById("action-profil");
+
+    const profilInputs =
+      document.querySelectorAll(".profil-input");
+
+    // KLIK EDIT
+    btnEditProfil.addEventListener("click", function () {
+
+      profilInputs.forEach(input => {
+
+        if (input.tagName === "SELECT") {
+          input.disabled = false;
+        } else {
+          input.removeAttribute("readonly");
+        }
+
+      });
+
+      actionProfil.classList.remove("d-none");
+
+      btnEditProfil.classList.add("d-none");
+
+    });
+
+    // KLIK BATAL
+    btnBatalEdit.addEventListener("click", function () {
+
+      profilInputs.forEach(input => {
+
+        if (input.tagName === "SELECT") {
+          input.disabled = true;
+        } else {
+          input.setAttribute("readonly", true);
+        }
+
+      });
+
+      actionProfil.classList.add("d-none");
+
+      btnEditProfil.classList.remove("d-none");
+
+      // reload data asli
+      loadProfilDosen();
+
+    });
+  </script>
+</body>
+
 </html>
