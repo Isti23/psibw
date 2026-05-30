@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 include 'koneksi.php';
 
-$query = "SELECT id_dosen, nidn, nama_dosen FROM dosen"; // Pastikan id_dosen ada di SELECT!
+$query = "SELECT id_dosen, nidn, nama_dosen, email, no_hp, jenis_kelamin, alamat, foto FROM dosen"; 
 $result = $conn->query($query);
 
 $data = [];

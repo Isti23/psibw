@@ -12,6 +12,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
       body {
@@ -78,6 +79,10 @@
         background-color: rgba(255, 255, 255, 0.2);
         font-weight: 600;
       }
+      .nav-separator {
+        border-top: 1px solid rgba(255,255,255,0.2);
+        margin: 10px 20px;
+      }
       .btn-keluar {
         background-color: white;
         color: #d9534f;
@@ -119,12 +124,10 @@
         font-weight: 600;
         font-size: 16px;
       }
-
       .simpan {
         color: white;
         transition: 0.3s;
       }
-
       .simpan:hover {
         background-color: #5140b9;
         color: white;
@@ -155,6 +158,13 @@
         border-top: 1px solid #dee2e6;
         background-color: #fff;
       }
+      .foto-mahasiswa {
+        width: 40px; 
+        height: 40px; 
+        object-fit: cover; 
+        border-radius: 50%;
+        border: 2px solid #eee;
+      }
     </style>
   </head>
   <body>
@@ -166,21 +176,14 @@
           <div class="role">ADMIN</div>
         </div>
         <div class="nav-menu flex-grow-1">
-          <a href="dashboard.html" class="nav-link"
-            ><i class="fas fa-home"></i> Dashboard</a
-          >
-          <a href="mahasiswa.html" class="nav-link"
-            ><i class="fas fa-address-card"></i> Data Mahasiswa</a
-          >
-          <a href="dosen.html" class="nav-link"
-            ><i class="fas fa-id-badge"></i> Data Dosen</a
-          >
-          <a href="matakuliah.html" class="nav-link"
-            ><i class="fas fa-book-open"></i> Data Matakuliah</a
-          >
+          <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+          <a href="mahasiswa.html" class="nav-link"><i class="fas fa-address-card"></i> Data Mahasiswa</a>
+          <a href="dosen.html" class="nav-link"><i class="fas fa-id-badge"></i> Data Dosen</a>
+          <a href="matakuliah.html" class="nav-link"><i class="fas fa-book-open"></i> Data Matakuliah</a>
+          <a href="tukar_password.html" class="nav-link"><i class="fas fa-key"></i> Tukar Password</a>
         </div>
         <div class="mt-auto">
-          <a href="login.html" class="btn-keluar">KELUAR</a>
+          <a href="#" onclick="logoutSystem()" class="btn-keluar">KELUAR</a>
         </div>
       </div>
 
@@ -188,15 +191,9 @@
         <div class="header-title">Kelola Mahasiswa</div>
 
         <div class="card table-card">
-          <div
-            class="table-card-header bg-ungu d-flex justify-content-between align-items-center"
-          >
+          <div class="table-card-header bg-ungu d-flex justify-content-between align-items-center">
             <span>Daftar Seluruh Mahasiswa</span>
-            <button
-              class="btn btn-light btn-sm fw-bold text-dark"
-              data-bs-toggle="modal"
-              data-bs-target="#modalTambah"
-            >
+            <button class="btn btn-light btn-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#modalTambah">
               <i class="fas fa-plus me-1"></i> Tambah Data
             </button>
           </div>
@@ -205,11 +202,15 @@
             <table class="table-custom">
               <thead>
                 <tr>
+                  <th width="5%" class="text-center">
+                    <input type="checkbox" class="form-check-input" id="check-all" onclick="toggleAllCheckboxes(this)">
+                  </th>
                   <th width="5%">No</th>
-                  <th width="15%">NIM</th>
-                  <th width="25%">Nama Mahasiswa</th>
-                  <th width="10%">Angkatan</th>
-                  <th width="25%">Email</th>
+                  <th width="8%">Foto</th>
+                  <th width="12%">NIM</th>
+                  <th width="22%">Nama Mahasiswa</th>
+                  <th width="8%">Angkatan</th>
+                  <th width="20%">Email</th>
                   <th width="20%" class="text-center">Aksi</th>
                 </tr>
               </thead>
@@ -217,18 +218,47 @@
             </table>
           </div>
 
-          <div
-            class="pagination-wrapper d-flex justify-content-between align-items-center"
-          >
-            <div id="page-info" class="small text-muted">
-              Showing 0 to 0 of 0 entries
+          <div class="pagination-wrapper d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn btn-danger btn-sm fw-bold" onclick="hapusBanyak()">
+                <i class="fas fa-trash-alt me-1"></i> Hapus Checklist
+              </button>
+              <div id="page-info" class="small text-muted mb-0">
+                Showing 0 to 0 of 0 entries
+              </div>
             </div>
+            
             <nav aria-label="Page navigation">
-              <ul
-                class="pagination pagination-sm mb-0"
-                id="pagination-controls"
-              ></ul>
+              <ul class="pagination pagination-sm mb-0" id="pagination-controls"></ul>
             </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalDetail" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-info text-white">
+            <h5 class="modal-title"><i class="fas fa-id-card me-2"></i>Detail Mahasiswa</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img src="foto/default.jpg" id="detail_foto" class="rounded-circle mb-3 border border-3" style="width: 100px; height: 100px; object-fit: cover;">
+            <h4 class="fw-bold mb-0" id="detail_nama">Nama Lengkap</h4>
+            <p class="text-muted" id="detail_nim">NIM</p>
+            <table class="table table-sm text-start mt-4">
+              <tr><th width="40%">Program Studi</th><td>: <span id="detail_prodi"></span></td></tr>
+              <tr><th>Jurusan</th><td>: <span id="detail_jurusan"></span></td></tr>
+              <tr><th>Fakultas</th><td>: <span id="detail_fakultas"></span></td></tr>
+              <tr><th>Semester</th><td>: <span id="detail_semester"></span></td></tr>
+              <tr><th>Jenis Kelamin</th><td>: <span id="detail_jk"></span></td></tr>
+              <tr><th>Tempat, Tgl Lahir</th><td>: <span id="detail_ttl"></span></td></tr>
+              <tr><th>Email</th><td>: <span id="detail_email"></span></td></tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
           </div>
         </div>
       </div>
@@ -239,11 +269,7 @@
         <div class="modal-content">
           <div class="modal-header bg-ungu text-white">
             <h5 class="modal-title">Tambah Data Mahasiswa Lengkap</h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-            ></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
           <form id="formTambah">
             <div class="modal-body">
@@ -254,21 +280,11 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Nama Lengkap</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="nama_mhs"
-                    required
-                  />
+                  <input type="text" class="form-control" name="nama_mhs" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    name="email"
-                    required
-                  />
+                  <input type="email" class="form-control" name="email" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Jenis Kelamin</label>
@@ -279,74 +295,33 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Tempat Lahir</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="tempat_lahir"
-                    required
-                  />
+                  <input type="text" class="form-control" name="tempat_lahir" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Tanggal Lahir</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    name="tanggal_lahir"
-                    required
-                  />
+                  <input type="date" class="form-control" name="tanggal_lahir" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Semester</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    name="semester"
-                    required
-                  />
+                  <input type="number" class="form-control" name="semester" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Fakultas</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="fakultas"
-                    value="FMIPA"
-                    required
-                  />
+                  <input type="text" class="form-control" name="fakultas" value="FMIPA" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Jurusan</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="jurusan"
-                    value="Ilmu Komputer"
-                    required
-                  />
+                  <input type="text" class="form-control" name="jurusan" value="Ilmu Komputer" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Prodi</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="prodi"
-                    value="Sistem Informasi"
-                    required
-                  />
+                  <input type="text" class="form-control" name="prodi" value="Sistem Informasi" required />
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Batal
-              </button>
-              <button type="submit" class="btn text-white bg-ungu simpan">
-                Simpan Data
-              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn text-white bg-ungu simpan">Simpan Data</button>
             </div>
           </form>
         </div>
@@ -358,11 +333,7 @@
         <div class="modal-content">
           <div class="modal-header bg-warning text-dark">
             <h5 class="modal-title fw-bold">Edit Data Mahasiswa</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <form id="formEdit">
             <div class="modal-body">
@@ -370,119 +341,52 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label">NIM</label>
-                  <input
-                    type="text"
-                    class="form-control bg-light"
-                    name="nim"
-                    id="edit_nim"
-                    readonly
-                  />
+                  <input type="text" class="form-control bg-light" name="nim" id="edit_nim" readonly />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Nama Lengkap</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="nama_mhs"
-                    id="edit_nama"
-                    required
-                  />
+                  <input type="text" class="form-control" name="nama_mhs" id="edit_nama" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    name="email"
-                    id="edit_email"
-                    required
-                  />
+                  <input type="email" class="form-control" name="email" id="edit_email" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Jenis Kelamin</label>
-                  <select
-                    class="form-select"
-                    name="jenis_kelamin"
-                    id="edit_jk"
-                    required
-                  >
+                  <select class="form-select" name="jenis_kelamin" id="edit_jk" required>
                     <option value="Perempuan">Perempuan</option>
                     <option value="Laki-laki">Laki-laki</option>
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Tempat Lahir</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="tempat_lahir"
-                    id="edit_tempat"
-                    required
-                  />
+                  <input type="text" class="form-control" name="tempat_lahir" id="edit_tempat" required />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Tanggal Lahir</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    name="tanggal_lahir"
-                    id="edit_tgl"
-                    required
-                  />
+                  <input type="date" class="form-control" name="tanggal_lahir" id="edit_tgl" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Semester</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    name="semester"
-                    id="edit_smt"
-                    required
-                  />
+                  <input type="number" class="form-control" name="semester" id="edit_smt" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Fakultas</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="fakultas"
-                    id="edit_fakultas"
-                    required
-                  />
+                  <input type="text" class="form-control" name="fakultas" id="edit_fakultas" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Jurusan</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="jurusan"
-                    id="edit_jurusan"
-                    required
-                  />
+                  <input type="text" class="form-control" name="jurusan" id="edit_jurusan" required />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label class="form-label">Prodi</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="prodi"
-                    id="edit_prodi"
-                    required
-                  />
+                  <input type="text" class="form-control" name="prodi" id="edit_prodi" required />
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Batal
-              </button>
-              <button type="submit" class="btn btn-warning fw-bold">
-                Update Data
-              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-warning fw-bold">Update Data</button>
             </div>
           </form>
         </div>
@@ -498,51 +402,68 @@
 
       document.addEventListener("DOMContentLoaded", function () {
         loadDataMahasiswa();
+        setupSidebarActive();
       });
 
       function loadDataMahasiswa() {
         fetch("api/get_mahasiswa.php")
-          .then((res) => res.json())
+          .then((res) => {
+            if (!res.ok) throw new Error("Gagal terhubung ke file PHP");
+            return res.json();
+          })
           .then((res) => {
             dataMahasiswa = res.data ? res.data : res;
             renderTable();
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.error(err);
+            Swal.fire('Error sistem', 'Gagal menarik data. Coba cek file get_mahasiswa.php kamu!', 'error');
+          });
       }
 
       function renderTable() {
         const tbody = document.getElementById("tbody-mahasiswa-full");
         tbody.innerHTML = "";
+        
+        const checkAllBtn = document.getElementById('check-all');
+        if (checkAllBtn) checkAllBtn.checked = false;
 
         const startIndex = (currentPage - 1) * rowsPerPage;
-        const endIndex = Math.min(
-          startIndex + rowsPerPage,
-          dataMahasiswa.length,
-        );
+        const endIndex = Math.min(startIndex + rowsPerPage, dataMahasiswa.length);
         const paginatedData = dataMahasiswa.slice(startIndex, endIndex);
 
         if (paginatedData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada data mahasiswa.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Belum ada data mahasiswa.</td></tr>`;
         } else {
           paginatedData.forEach((mhs, index) => {
             const nomorUrut = startIndex + index + 1;
-            let digitTahun = mhs.nim ? mhs.nim.substring(0, 2) : "00";
+            
+            // PERBAIKAN: Memastikan NIM diubah ke Teks (String) dulu sebelum dipotong
+            let nimString = mhs.nim ? String(mhs.nim) : "00";
+            let digitTahun = nimString.substring(0, 2);
             let angkatan = "20" + digitTahun;
+            
             let emailTampil = mhs.email ? mhs.email : "-";
+            let fotoTampil = mhs.foto ? "foto/" + mhs.foto : "foto/default.jpg";
 
             tbody.innerHTML += `
-                    <tr>
-                        <td>${nomorUrut}</td>
-                        <td class="fw-bold text-secondary">${mhs.nim}</td>
-                        <td>${mhs.nama_mhs}</td>
-                        <td>${angkatan}</td>
-                        <td>${emailTampil}</td>
-                        <td class="text-center">
-                            <button onclick="bukaModalEdit('${mhs.nim}')" class="btn btn-sm btn-warning text-white me-1"><i class="fas fa-edit"></i></button>
-                            <button onclick="hapusMahasiswa('${mhs.nim}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
+              <tr>
+                  <td class="text-center">
+                    <input type="checkbox" class="form-check-input check-item" value="${mhs.nim}">
+                  </td>
+                  <td>${nomorUrut}</td>
+                  <td><img src="${fotoTampil}" class="foto-mahasiswa" alt="Foto"></td>
+                  <td class="fw-bold text-secondary">${mhs.nim}</td>
+                  <td>${mhs.nama_mhs}</td>
+                  <td>${angkatan}</td>
+                  <td>${emailTampil}</td>
+                  <td class="text-center">
+                      <button onclick="bukaModalDetail('${mhs.nim}')" class="btn btn-sm btn-info text-white" title="Detail"><i class="fas fa-eye"></i></button>
+                      <button onclick="bukaModalEdit('${mhs.nim}')" class="btn btn-sm btn-warning text-white mx-1" title="Edit"><i class="fas fa-edit"></i></button>
+                      <button onclick="hapusSatuMahasiswa('${mhs.nim}')" class="btn btn-sm btn-danger" title="Hapus"><i class="fas fa-trash"></i></button>
+                  </td>
+              </tr>
+            `;
           });
         }
 
@@ -554,10 +475,7 @@
       function setupPaginationControls() {
         const controlsWrapper = document.getElementById("pagination-controls");
         controlsWrapper.innerHTML = "";
-        const totalPages = Math.max(
-          1,
-          Math.ceil(dataMahasiswa.length / rowsPerPage),
-        );
+        const totalPages = Math.max(1, Math.ceil(dataMahasiswa.length / rowsPerPage));
 
         controlsWrapper.innerHTML += `
             <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
@@ -583,9 +501,36 @@
         renderTable();
       };
 
-      document
-        .getElementById("formTambah")
-        .addEventListener("submit", function (e) {
+      // FUNGSI CHECKBOX ALL
+      window.toggleAllCheckboxes = function(source) {
+        const checkboxes = document.querySelectorAll('.check-item');
+        checkboxes.forEach(cb => cb.checked = source.checked);
+      };
+
+      // POPUP DETAIL
+      window.bukaModalDetail = function (nim) {
+        const mhs = dataMahasiswa.find((m) => m.nim === nim);
+        if (mhs) {
+          // Update sumber foto dinamis
+          const pathFoto = mhs.foto ? "foto/" + mhs.foto : "foto/default.jpg";
+          document.getElementById("detail_foto").src = pathFoto;
+
+          document.getElementById("detail_nama").innerText = mhs.nama_mhs;
+          document.getElementById("detail_nim").innerText = mhs.nim;
+          document.getElementById("detail_prodi").innerText = mhs.prodi || "-";
+          document.getElementById("detail_jurusan").innerText = mhs.jurusan || "-";
+          document.getElementById("detail_fakultas").innerText = mhs.fakultas || "-";
+          document.getElementById("detail_semester").innerText = mhs.semester || "-";
+          document.getElementById("detail_jk").innerText = mhs.jenis_kelamin || "-";
+          document.getElementById("detail_ttl").innerText = (mhs.tempat_lahir || "-") + ", " + (mhs.tanggal_lahir || "-");
+          document.getElementById("detail_email").innerText = mhs.email || "-";
+          
+          new bootstrap.Modal(document.getElementById("modalDetail")).show();
+        }
+      };
+
+      // TAMBAH DATA DENGAN SWEETALERT
+      document.getElementById("formTambah").addEventListener("submit", function (e) {
           e.preventDefault();
           const formData = new FormData(this);
 
@@ -595,19 +540,22 @@
           })
             .then((res) => res.json())
             .then((res) => {
-              alert("Data mahasiswa berhasil ditambahkan!");
+              Swal.fire({
+                title: "Berhasil!",
+                text: "Data mahasiswa berhasil ditambahkan.",
+                icon: "success",
+                confirmButtonColor: '#7b68ee'
+              });
               document.getElementById("formTambah").reset();
-              bootstrap.Modal.getInstance(
-                document.getElementById("modalTambah"),
-              ).hide();
+              bootstrap.Modal.getInstance(document.getElementById("modalTambah")).hide();
               loadDataMahasiswa();
             })
-            .catch((err) => alert("Terjadi kesalahan saat menambah data."));
+            .catch((err) => Swal.fire('Error', 'Terjadi kesalahan saat menambah data.', 'error'));
         });
 
+      // EDIT DATA
       window.bukaModalEdit = function (nim) {
         const mhs = dataMahasiswa.find((m) => m.nim === nim);
-
         if (mhs) {
           document.getElementById("edit_id_mhs").value = mhs.id_mhs;
           document.getElementById("edit_nim").value = mhs.nim;
@@ -620,18 +568,13 @@
           document.getElementById("edit_fakultas").value = mhs.fakultas;
           document.getElementById("edit_jurusan").value = mhs.jurusan;
           document.getElementById("edit_prodi").value = mhs.prodi;
-
           new bootstrap.Modal(document.getElementById("modalEdit")).show();
         }
       };
 
-      document
-        .getElementById("formEdit")
-        .addEventListener("submit", function (e) {
+      document.getElementById("formEdit").addEventListener("submit", function (e) {
           e.preventDefault();
           const formData = new FormData(this);
-
-          // Fetch URL diubah menjadi path API yang benar
           fetch("api/update_mahasiswa.php", {
             method: "POST",
             body: formData,
@@ -639,63 +582,104 @@
             .then((res) => res.json())
             .then((res) => {
               if (res.status === "success") {
-                alert("Data mahasiswa berhasil diupdate!");
-                bootstrap.Modal.getInstance(
-                  document.getElementById("modalEdit"),
-                ).hide();
+                Swal.fire({ title: "Diperbarui!", text: "Data mahasiswa berhasil diupdate.", icon: "success" });
+                bootstrap.Modal.getInstance(document.getElementById("modalEdit")).hide();
                 loadDataMahasiswa();
               } else {
-                alert("Error: " + res.message);
+                Swal.fire('Gagal', res.message, 'error');
               }
             })
-            .catch((err) =>
-              alert("Terjadi kesalahan sistem saat mengupdate data."),
-            );
+            .catch((err) => Swal.fire('Error', 'Terjadi kesalahan sistem saat mengupdate data.', 'error'));
         });
 
-      window.hapusMahasiswa = function (nim) {
-        if (
-          confirm(
-            `Yakin ingin menghapus seluruh data mahasiswa dengan NIM ${nim}?`,
-          )
-        ) {
-          const formData = new FormData();
-          formData.append("nim", nim);
-
-          fetch("api/delete_mahasiswa.php", {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => res.json())
-            .then((res) => {
-              alert("Data berhasil dihapus!");
-              loadDataMahasiswa();
+      // HAPUS 1 DATA
+      window.hapusSatuMahasiswa = function (nim) {
+        Swal.fire({
+          title: 'Hapus Data?',
+          text: `Yakin ingin menghapus data mahasiswa dengan NIM ${nim}?`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const formData = new FormData();
+            formData.append("nim", nim);
+            fetch("api/delete_mahasiswa.php", {
+              method: "POST",
+              body: formData,
             })
-            .catch((err) => alert("Gagal menghapus data!"));
-        }
+              .then((res) => res.json())
+              .then((res) => {
+                Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
+                loadDataMahasiswa();
+              })
+              .catch((err) => Swal.fire('Gagal', 'Gagal menghapus data.', 'error'));
+          }
+        });
       };
 
-      document.addEventListener("DOMContentLoaded", function () {
-        // 1. Ambil nama file dari URL saat ini (contoh: "matakuliah.html")
+      // HAPUS BANYAK CHECKLIST
+      window.hapusBanyak = function() {
+        const checkedItems = document.querySelectorAll('.check-item:checked');
+        if(checkedItems.length === 0) {
+            Swal.fire('Peringatan', 'Silakan pilih minimal 1 data yang ingin dihapus.', 'warning');
+            return;
+        }
+
+        Swal.fire({
+          title: 'Hapus Beberapa Data?',
+          text: `Anda akan menghapus ${checkedItems.length} data mahasiswa secara permanen.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Hapus Semua Terpilih'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Karena belum ada API khusus hapus jamak, kita fetch berulang 
+            let promises = Array.from(checkedItems).map(cb => {
+                let fd = new FormData(); fd.append('nim', cb.value);
+                return fetch("api/delete_mahasiswa.php", { method: "POST", body: fd});
+            });
+
+            Promise.all(promises).then(() => {
+                 Swal.fire('Selesai!', 'Seluruh data terpilih berhasil dihapus.', 'success');
+                 loadDataMahasiswa();
+            }).catch(()=> Swal.fire('Error', 'Terjadi kesalahan sistem', 'error'));
+          }
+        });
+      };
+
+      // LOGOUT SWEETALERT
+      window.logoutSystem = function() {
+        Swal.fire({
+            title: 'Konfirmasi Logout',
+            text: 'Apakah Anda yakin ingin keluar dari sistem?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#d9534f',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Keluar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "login.html";
+            }
+        });
+      }
+
+      function setupSidebarActive() {
         let currentLocation = window.location.pathname.split("/").pop();
-
-        // Jika path kosong (hanya localhost/siakad/), set default ke dashboard
         if (currentLocation === "") currentLocation = "dashboard.html";
-
-        // 2. Ambil semua elemen link di dalam menu sidebar
         const navLinks = document.querySelectorAll(".nav-menu .nav-link");
-
-        // 3. Looping untuk mengecek satu-satu
         navLinks.forEach((link) => {
-          // Ambil isi dari atribut href (misal: "mahasiswa.html")
           const linkHref = link.getAttribute("href");
-
-          // Jika href cocok dengan URL saat ini, tambahkan class 'active'
           if (linkHref === currentLocation) {
             link.classList.add("active");
           }
         });
-      });
+      }
     </script>
   </body>
 </html>

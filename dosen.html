@@ -153,6 +153,14 @@
         border-top: 1px solid #dee2e6;
         background-color: #fff;
       }
+      /* TAMBAHAN KELAS UNTUK FOTO DOSEN */
+      .foto-dosen {
+        width: 40px; 
+        height: 40px; 
+        object-fit: cover; 
+        border-radius: 50%;
+        border: 2px solid #eee;
+      }
     </style>
   </head>
   <body>
@@ -164,18 +172,11 @@
           <div class="role">ADMIN</div>
         </div>
         <div class="nav-menu flex-grow-1">
-          <a href="dashboard.html" class="nav-link"
-            ><i class="fas fa-home"></i> Dashboard</a
-          >
-          <a href="mahasiswa.html" class="nav-link"
-            ><i class="fas fa-address-card"></i> Data Mahasiswa</a
-          >
-          <a href="dosen.html" class="nav-link"
-            ><i class="fas fa-id-badge"></i> Data Dosen</a
-          >
-          <a href="matakuliah.html" class="nav-link"
-            ><i class="fas fa-book-open"></i> Data Matakuliah</a
-          >
+          <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+          <a href="mahasiswa.html" class="nav-link"><i class="fas fa-address-card"></i> Data Mahasiswa</a>
+          <a href="dosen.html" class="nav-link"><i class="fas fa-id-badge"></i> Data Dosen</a>
+          <a href="matakuliah.html" class="nav-link"><i class="fas fa-book-open"></i> Data Matakuliah</a>
+          <a href="tukar_password.html" class="nav-link"><i class="fas fa-key"></i> Tukar Password</a>
         </div>
         <div class="mt-auto">
           <a href="login.html" class="btn-keluar">KELUAR</a>
@@ -186,50 +187,35 @@
         <div class="header-title">Kelola Data Dosen</div>
 
         <div class="card table-card">
-          <div
-            class="table-card-header bg-hijau d-flex justify-content-between align-items-center"
-          >
+          <div class="table-card-header bg-hijau d-flex justify-content-between align-items-center">
             <span>Daftar Seluruh Dosen</span>
-            <button
-              class="btn btn-light btn-sm fw-bold text-dark"
-              data-bs-toggle="modal"
-              data-bs-target="#modalTambahDosen"
-            >
+            <button class="btn btn-light btn-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#modalTambahDosen">
               <i class="fas fa-plus me-1"></i> Tambah Dosen
             </button>
           </div>
 
           <div class="table-responsive">
             <table class="table-custom table table-hover">
-              <div class="table-responsive">
-                <table class="table-custom table table-hover">
-                  <thead>
-                    <tr>
-                      <th width="5%">No</th>
-                      <th width="20%">NIDN</th>
-                      <th width="30%">Nama Dosen</th>
-                      <th width="30%">Email</th>
-                      <th width="15%" class="text-center">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tbody-dosen-full"></tbody>
-                </table>
-              </div>
+              <thead>
+                <tr>
+                  <th width="5%">No</th>
+                  <th width="8%">Foto</th>
+                  <th width="17%">NIDN</th>
+                  <th width="25%">Nama Dosen</th>
+                  <th width="30%">Email</th>
+                  <th width="15%" class="text-center">Aksi</th>
+                </tr>
+              </thead>
               <tbody id="tbody-dosen-full"></tbody>
             </table>
           </div>
 
-          <div
-            class="pagination-wrapper d-flex justify-content-between align-items-center"
-          >
+          <div class="pagination-wrapper d-flex justify-content-between align-items-center">
             <div id="page-info" class="small text-muted">
               Showing 0 to 0 of 0 entries
             </div>
             <nav aria-label="Page navigation">
-              <ul
-                class="pagination pagination-sm mb-0"
-                id="pagination-controls"
-              ></ul>
+              <ul class="pagination pagination-sm mb-0" id="pagination-controls"></ul>
             </nav>
           </div>
         </div>
@@ -241,31 +227,17 @@
         <div class="modal-content">
           <div class="modal-header bg-hijau text-white">
             <h5 class="modal-title">Tambah Data Dosen</h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-            ></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
           <form id="formTambahDosen">
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">NIDN</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="tambahNIDN"
-                  required
-                />
+                <input type="text" class="form-control" id="tambahNIDN" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Nama Dosen</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="tambahNama"
-                  required
-                />
+                <input type="text" class="form-control" id="tambahNama" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -284,24 +256,12 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Alamat</label>
-                <textarea
-                  class="form-control"
-                  id="tambahAlamat"
-                  rows="2"
-                ></textarea>
+                <textarea class="form-control" id="tambahAlamat" rows="2"></textarea>
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Batal
-              </button>
-              <button type="submit" class="btn text-white bg-hijau simpan">
-                Simpan
-              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn text-white bg-hijau simpan">Simpan</button>
             </div>
           </form>
         </div>
@@ -313,31 +273,17 @@
         <div class="modal-content">
           <div class="modal-header bg-warning text-dark">
             <h5 class="modal-title fw-bold">Edit Data Dosen</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <form id="formEditDosen">
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">NIDN</label>
-                <input
-                  type="text"
-                  class="form-control bg-light"
-                  id="editNIDN"
-                  readonly
-                />
+                <input type="text" class="form-control bg-light" id="editNIDN" readonly />
               </div>
               <div class="mb-3">
                 <label class="form-label">Nama Dosen</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="editNama"
-                  required
-                />
+                <input type="text" class="form-control" id="editNama" required />
               </div>
               <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -356,24 +302,12 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Alamat</label>
-                <textarea
-                  class="form-control"
-                  id="editAlamat"
-                  rows="2"
-                ></textarea>
+                <textarea class="form-control" id="editAlamat" rows="2"></textarea>
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Batal
-              </button>
-              <button type="submit" class="btn btn-warning fw-bold">
-                Update Data
-              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-warning fw-bold">Update Data</button>
             </div>
           </form>
         </div>
@@ -396,7 +330,7 @@
         fetch("api/get_dosen.php")
           .then((res) => res.json())
           .then((res) => {
-            if (res.status === "success") {
+            if (res.status === "success" || res.data) {
               dataDosen = res.data ? res.data : res;
               renderTable();
             } else {
@@ -406,11 +340,10 @@
           .catch((err) => {
             console.log(err);
             document.getElementById("tbody-dosen-full").innerHTML =
-              `<tr><td colspan="5" class="text-center text-danger">Gagal memuat data.</td></tr>`;
+              `<tr><td colspan="6" class="text-center text-danger">Gagal memuat data.</td></tr>`;
           });
       }
 
-      // 2. Render Tabel
       // 2. Render Tabel
       function renderTable() {
         const tbody = document.getElementById("tbody-dosen-full");
@@ -421,14 +354,18 @@
         const paginatedData = dataDosen.slice(startIndex, endIndex);
 
         if (paginatedData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Belum ada data dosen.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada data dosen.</td></tr>`;
         } else {
           paginatedData.forEach((dsn, index) => {
             const nomorUrut = startIndex + index + 1;
+            
+            // LOGIKA FOTO DINAMIS UNTUK DOSEN
+            let fotoTampil = dsn.foto ? "foto/" + dsn.foto : "foto/default.png";
 
             tbody.innerHTML += `
                     <tr>
                         <td>${nomorUrut}</td>
+                        <td><img src="${fotoTampil}" class="foto-dosen" alt="Foto"></td>
                         <td class="fw-bold text-secondary">${dsn.nidn}</td>
                         <td>${dsn.nama_dosen || dsn.nama || "-"}</td>
                         <td>${dsn.email || "-"}</td>
@@ -449,10 +386,7 @@
       function setupPaginationControls() {
         const controlsWrapper = document.getElementById("pagination-controls");
         controlsWrapper.innerHTML = "";
-        const totalPages = Math.max(
-          1,
-          Math.ceil(dataDosen.length / rowsPerPage),
-        );
+        const totalPages = Math.max(1, Math.ceil(dataDosen.length / rowsPerPage));
 
         controlsWrapper.innerHTML += `
             <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
@@ -479,27 +413,15 @@
       };
 
       // 3. Tambah Dosen
-      document
-        .getElementById("formTambahDosen")
-        .addEventListener("submit", function (e) {
+      document.getElementById("formTambahDosen").addEventListener("submit", function (e) {
           e.preventDefault();
-
           const formData = new FormData();
           formData.append("nidn", document.getElementById("tambahNIDN").value);
           formData.append("nama", document.getElementById("tambahNama").value);
-          formData.append(
-            "email",
-            document.getElementById("tambahEmail").value,
-          );
+          formData.append("email", document.getElementById("tambahEmail").value);
           formData.append("no_hp", document.getElementById("tambahNoHP").value);
-          formData.append(
-            "jenis_kelamin",
-            document.getElementById("tambahJK").value,
-          );
-          formData.append(
-            "alamat",
-            document.getElementById("tambahAlamat").value,
-          );
+          formData.append("jenis_kelamin", document.getElementById("tambahJK").value);
+          formData.append("alamat", document.getElementById("tambahAlamat").value);
 
           fetch("api/add_dosen.php", {
             method: "POST",
@@ -510,17 +432,13 @@
               if (res.status === "success") {
                 alert(res.message);
                 document.getElementById("formTambahDosen").reset();
-                bootstrap.Modal.getInstance(
-                  document.getElementById("modalTambahDosen"),
-                ).hide();
+                bootstrap.Modal.getInstance(document.getElementById("modalTambahDosen")).hide();
                 loadDataDosen();
               } else {
                 alert("Gagal: " + res.message);
               }
             })
-            .catch((err) =>
-              alert("Terjadi kesalahan sistem saat menambah data dosen!"),
-            );
+            .catch((err) => alert("Terjadi kesalahan sistem saat menambah data dosen!"));
         });
 
       // 4. Buka Modal Edit
@@ -535,24 +453,15 @@
       };
 
       // 5. Update Dosen
-      document
-        .getElementById("formEditDosen")
-        .addEventListener("submit", function (e) {
+      document.getElementById("formEditDosen").addEventListener("submit", function (e) {
           e.preventDefault();
-
           const formData = new FormData();
           formData.append("nidn", document.getElementById("editNIDN").value);
           formData.append("nama", document.getElementById("editNama").value);
           formData.append("email", document.getElementById("editEmail").value);
           formData.append("no_hp", document.getElementById("editNoHP").value);
-          formData.append(
-            "jenis_kelamin",
-            document.getElementById("editJK").value,
-          );
-          formData.append(
-            "alamat",
-            document.getElementById("editAlamat").value,
-          );
+          formData.append("jenis_kelamin", document.getElementById("editJK").value);
+          formData.append("alamat", document.getElementById("editAlamat").value);
 
           fetch("api/update_dosen.php", {
             method: "POST",
@@ -562,26 +471,18 @@
             .then((res) => {
               if (res.status === "success") {
                 alert(res.message);
-                bootstrap.Modal.getInstance(
-                  document.getElementById("modalEditDosen"),
-                ).hide();
+                bootstrap.Modal.getInstance(document.getElementById("modalEditDosen")).hide();
                 loadDataDosen();
               } else {
                 alert("Gagal: " + res.message);
               }
             })
-            .catch((err) =>
-              alert("Terjadi kesalahan sistem saat memperbarui data dosen!"),
-            );
+            .catch((err) => alert("Terjadi kesalahan sistem saat memperbarui data dosen!"));
         });
 
       // 6. Hapus Dosen
       window.hapusDosen = function (nidn) {
-        if (
-          confirm(
-            `Apakah Anda yakin ingin menghapus dosen dengan NIDN ${nidn}? Semua jadwalnya juga akan terhapus.`,
-          )
-        ) {
+        if (confirm(`Apakah Anda yakin ingin menghapus dosen dengan NIDN ${nidn}? Semua jadwalnya juga akan terhapus.`)) {
           const formData = new FormData();
           formData.append("nidn", nidn);
 
@@ -598,28 +499,16 @@
                 alert("Gagal: " + res.message);
               }
             })
-            .catch((err) =>
-              alert("Terjadi kesalahan sistem saat menghapus data!"),
-            );
+            .catch((err) => alert("Terjadi kesalahan sistem saat menghapus data!"));
         }
       };
 
       document.addEventListener("DOMContentLoaded", function () {
-        // 1. Ambil nama file dari URL saat ini (contoh: "matakuliah.html")
         let currentLocation = window.location.pathname.split("/").pop();
-
-        // Jika path kosong (hanya localhost/siakad/), set default ke dashboard
         if (currentLocation === "") currentLocation = "dashboard.html";
-
-        // 2. Ambil semua elemen link di dalam menu sidebar
         const navLinks = document.querySelectorAll(".nav-menu .nav-link");
-
-        // 3. Looping untuk mengecek satu-satu
         navLinks.forEach((link) => {
-          // Ambil isi dari atribut href (misal: "mahasiswa.html")
           const linkHref = link.getAttribute("href");
-
-          // Jika href cocok dengan URL saat ini, tambahkan class 'active'
           if (linkHref === currentLocation) {
             link.classList.add("active");
           }

@@ -12,7 +12,7 @@ include 'koneksi.php';
 // ✅ Pilih kolom spesifik, jangan SELECT *
 // ✅ Pilih kolom spesifik, pastikan semua data yang dibutuhkan oleh tabel dan form Edit ikut dipanggil
 // Cari baris $query di file get_mahasiswa.php kamu, lalu ubah jadi seperti ini:
-$query = "SELECT id_mhs, nim, nama_mhs, email, jenis_kelamin, tempat_lahir, tanggal_lahir, semester, fakultas, jurusan, prodi, ipk FROM mahasiswa ORDER BY id_mhs DESC";
+$query = "SELECT id_mhs, nim, nama_mhs, email, jenis_kelamin, tempat_lahir, tanggal_lahir, semester, fakultas, jurusan, prodi, ipk, foto FROM mahasiswa ORDER BY id_mhs DESC";
 $result = $conn->query($query);
 
 $data = [];
