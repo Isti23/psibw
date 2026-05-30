@@ -31,14 +31,8 @@ SELECT
 
 FROM mahasiswa
 
-LEFT JOIN krs
-ON mahasiswa.id_mhs = krs.id_mhs
-
-LEFT JOIN jadwal
-ON krs.id_jadwal = jadwal.id_jadwal
-
 LEFT JOIN dosen
-ON jadwal.id_dosen = dosen.id_dosen
+ON mahasiswa.id_dosen = dosen.id_dosen
 
 WHERE mahasiswa.id_user = '$id_user'
 
