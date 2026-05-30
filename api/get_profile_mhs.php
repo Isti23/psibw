@@ -1,59 +1,132 @@
 <?php
+
 session_start();
-include 'koneksi.php'; // Pastikan nama file koneksi databasenya benar
+
+include 'koneksi.php';
 
 header('Content-Type: application/json');
 
-// 1. Cek siapa yang lagi login (Biasanya dari session id_user atau username)
-// Asumsi: waktu login, kamu menyimpan id_user di $_SESSION['id_user']
+/* ================= CEK SESSION ================= */
+
 if (!isset($_SESSION['id_user'])) {
-    echo json_encode(["status" => "error", "message" => "Sesi login tidak ditemukan. Silakan login ulang."]);
+
+    echo json_encode([
+        "status" => "error",
+        "message" => "Sesi login tidak ditemukan"
+    ]);
+
     exit;
+
 }
 
 $id_user = $_SESSION['id_user'];
 
-// 2. Ambil data biodata mahasiswa berdasarkan id_user yang login
-$queryMhs = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE id_user = '$id_user'");
+/* ================= QUERY MAHASISWA ================= */
 
-if ($queryMhs && mysqli_num_rows($queryMhs) > 0) {
-    // Tarik datanya jadi array
+$queryMhs = mysqli_query($conn, "
+
+SELECT 
+    mahasiswa.*,
+    dosen.nama_dosen
+
+FROM mahasiswa
+
+LEFT JOIN dosen
+ON mahasiswa.id_dosen = dosen.id_dosen
+
+WHERE mahasiswa.id_user = '$id_user'
+
+LIMIT 1
+
+");
+
+/* ================= CEK QUERY ================= */
+
+if (!$queryMhs) {
+
+    echo json_encode([
+        "status" => "error",
+        "message" => mysqli_error($conn)
+    ]);
+
+    exit;
+
+}
+
+/* ================= CEK DATA ================= */
+
+if (mysqli_num_rows($queryMhs) > 0) {
+
     $dataMhs = mysqli_fetch_assoc($queryMhs);
-    $id_mhs = $dataMhs['id_mhs']; // Kita butuh id_mhs ini buat cari matkul di tabel KRS
 
-    // 3. Ambil data matakuliah yang diambil (JOIN krs dan matakuliah)
+    $id_mhs = $dataMhs['id_mhs'];
+
+    /* ================= QUERY MATAKULIAH ================= */
+
     $queryKrs = $conn->prepare("
-    SELECT mk.kode_mk, mk.nama_mk, mk.sks
-    FROM krs k
-    JOIN kelas kls ON k.id_kelas = kls.id_kelas
-    JOIN matakuliah mk ON kls.id_mk = mk.id_mk
-    WHERE k.id_mhs = ? AND k.status = 'disetujui'
+
+        SELECT 
+            mk.kode_mk,
+            mk.nama_mk,
+            mk.sks
+
+        FROM krs k
+
+        JOIN jadwal j
+        ON k.id_jadwal = j.id_jadwal
+
+        JOIN matakuliah mk
+        ON j.id_mk = mk.id_mk
+
+        WHERE k.id_mhs = ?
+
     ");
+
     $queryKrs->bind_param("i", $id_mhs);
+
     $queryKrs->execute();
-    $list_matkul = $queryKrs->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    $resultKrs = $queryKrs->get_result();
+
 
     $list_matkul = [];
-    if ($queryKrs) {
-        while ($row = mysqli_fetch_assoc($queryKrs)) {
-            $list_matkul[] = $row; // Masukkan ke dalam daftar
-        }
+
+    $total_sks = 0;
+
+    while ($row = $resultKrs->fetch_assoc()) {
+
+        $list_matkul[] = $row;
+
+        $total_sks += $row['sks'];
+
     }
 
-    // 4. Sisipkan daftar matakuliah ke dalam biodata mahasiswa
+    /* ================= GABUNG DATA ================= */
+
     $dataMhs['matakuliah'] = $list_matkul;
 
-    // 5. Lempar datanya ke Javascript di depan dalam bentuk JSON
+    $dataMhs['total_sks'] = $total_sks;
+
+    /* ================= OUTPUT JSON ================= */
+
     echo json_encode([
+
         "status" => "success",
+
         "data" => $dataMhs
+
     ]);
 
 } else {
-    // Kalau id_user nya gak ketemu di tabel mahasiswa
+
     echo json_encode([
-        "status" => "error", 
-        "message" => "Data mahasiswa tidak ditemukan di database."
+
+        "status" => "error",
+
+        "message" => "Data mahasiswa tidak ditemukan"
+
     ]);
+
 }
+
 ?>

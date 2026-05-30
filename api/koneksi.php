@@ -6,7 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 $host = "localhost";
 $user = "root";
-$pass = "";
+$pass = "fizamina";
 $db   = "siakad";
 
 $conn = new mysqli($host, $user, $pass, $db);
