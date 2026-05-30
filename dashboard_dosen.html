@@ -294,6 +294,9 @@
         <a onclick="switchSection('dashboard')" id="nav-dashboard" class="nav-link active">
           <i class="fas fa-home"></i> Dashboard
         </a>
+        <a onclick="switchSection('profil')" id="nav-profil" class="nav-link">
+          <i class="fas fa-user-cog"></i> Profil Saya
+        </a>
 
         <a onclick="switchSection('jadwal')" id="nav-jadwal" class="nav-link">
           <i class="fas fa-calendar-alt"></i> Jadwal Mengajar
@@ -306,9 +309,7 @@
         <a onclick="switchSection('bimbingan')" id="nav-bimbingan" class="nav-link">
           <i class="fas fa-users"></i> Mahasiswa Bimbingan
         </a>
-        <a onclick="switchSection('profil')" id="nav-profil" class="nav-link">
-          <i class="fas fa-user-cog"></i> Profil Saya
-        </a>
+
       </div>
 
       <div class="mt-auto">
@@ -327,7 +328,6 @@
         Selamat Datang, Bapak/Ibu Dosen
       </div>
 
-      <!-- DASHBOARD -->
 
       <!-- DASHBOARD -->
 
@@ -904,7 +904,7 @@
         .classList.add('active');
 
       const titles = {
-        dashboard: 'Dashboard Dosen',
+        dashboard: 'Selamat Datang, Bapak/Ibu Dosen',
         jadwal: 'Jadwal Mengajar',
         nilai: 'Input Nilai Mahasiswa',
         bimbingan: 'Mahasiswa Bimbingan',
