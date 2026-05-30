@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
+
   <style>
     body {
       background-color: #f4f6f9;
@@ -187,6 +188,80 @@
       border-radius: 50%;
       border: 3px solid #dee2e6;
     }
+
+    .dashboard-card {
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      transition: 0.3s;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .stat-mini-card {
+      border-radius: 16px;
+      padding: 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-mini-card i {
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      font-size: 35px;
+      opacity: 0.2;
+    }
+
+    .bg-blue {
+      background: linear-gradient(135deg, #4e73df, #224abe);
+    }
+
+    .bg-green {
+      background: linear-gradient(135deg, #1cc88a, #13855c);
+    }
+
+    .bg-orange {
+      background: linear-gradient(135deg, #f6c23e, #dda20a);
+    }
+
+    .bg-red {
+      background: linear-gradient(135deg, #e74a3b, #be2617);
+    }
+
+    .dashboard-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .dashboard-card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-mini-card {
+      border-radius: 18px;
+      padding: 24px;
+      min-height: 140px;
+    }
+
+    #dashboard-mk-list .border {
+      border: 1px solid #eef1f5 !important;
+      transition: 0.2s;
+    }
+
+    #dashboard-mk-list .border:hover {
+      background: #f8fbff;
+    }
   </style>
 </head>
 
@@ -219,6 +294,9 @@
         <a onclick="switchSection('dashboard')" id="nav-dashboard" class="nav-link active">
           <i class="fas fa-home"></i> Dashboard
         </a>
+        <a onclick="switchSection('profil')" id="nav-profil" class="nav-link">
+          <i class="fas fa-user-cog"></i> Profil Saya
+        </a>
 
         <a onclick="switchSection('jadwal')" id="nav-jadwal" class="nav-link">
           <i class="fas fa-calendar-alt"></i> Jadwal Mengajar
@@ -250,110 +328,191 @@
         Selamat Datang, Bapak/Ibu Dosen
       </div>
 
+
       <!-- DASHBOARD -->
 
       <div id="section-dashboard" class="content-section active-section">
 
         <div class="row g-4">
 
-          <!-- KIRI -->
+          <!-- PROFILE -->
+
+          <div class="col-lg-4">
+
+            <div class="card dashboard-card h-100">
+
+              <div class="card-body text-center p-4">
+
+                <img id="foto-profile-dosen" src="foto/default.png" class="profile-img-large mb-3">
+
+                <h4 class="fw-bold mb-1" id="nama-profile-dosen">
+                  Nama Dosen
+                </h4>
+
+                <p class="text-muted small mb-4">
+                  Dosen Sistem Informasi
+                </p>
+
+                <div class="text-start">
+
+                  <div class="mb-3">
+                    <small class="text-secondary">
+                      NIDN
+                    </small>
+
+                    <div class="fw-semibold" id="nidn-dosen">
+                      -
+                    </div>
+                  </div>
+
+                  <div>
+                    <small class="text-secondary">
+                      Email
+                    </small>
+
+                    <div class="fw-semibold" id="email-dosen">
+                      -
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT CONTENT -->
 
           <div class="col-lg-8">
 
-            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
-              <div class="card-body">
+            <div class="row g-3 mb-3">
 
-                <div class="row align-items-center">
+              <!-- CARD MK -->
 
-                  <div class="col-md-3 text-center">
-                    <img id="foto-profile-dosen" src="foto/default.png" class="profile-img-large">
+              <div class="col-md-6">
+
+                <div class="stat-mini-card bg-blue">
+
+                  <div class="small">
+                    Mata Kuliah
                   </div>
 
-                  <div class="col-md-9">
+                  <h2 class="fw-bold" id="stat-total-mk">
+                    0
+                  </h2>
 
-                    <h4 class="fw-bold mb-1" id="nama-profile-dosen">
-                      Nama Dosen
-                    </h4>
+                  <i class="fas fa-book"></i>
 
-                    <p class="text-muted mb-3">
-                      Dosen Program Studi Sistem Informasi
-                    </p>
+                </div>
 
-                    <div class="row">
+              </div>
 
-                      <div class="col-md-6 mb-2">
-                        <small class="text-secondary">
-                          NIDN
-                        </small>
+              <!-- CARD MAHASISWA -->
 
-                        <div class="fw-bold" id="nidn-dosen">
-                          -
-                        </div>
-                      </div>
+              <div class="col-md-6">
 
-                      <div class="col-md-6 mb-2">
-                        <small class="text-secondary">
-                          Email
-                        </small>
+                <div class="stat-mini-card bg-green">
 
-                        <div class="fw-bold" id="email-dosen">
-                          -
-                        </div>
-                      </div>
+                  <div class="small">
+                    Total Mahasiswa
+                  </div>
 
-                    </div>
+                  <h2 class="fw-bold" id="stat-total-mhs">
+                    0
+                  </h2>
+
+                  <i class="fas fa-users"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- QUICK MENU -->
+
+            <div class="card dashboard-card">
+
+              <div class="card-body">
+
+                <div class="dashboard-section-title mb-4">
+                  Layanan Akademik
+                </div>
+
+                <div class="row g-3">
+
+                  <div class="col-md-4">
+
+                    <button class="btn btn-primary w-100 py-3" onclick="switchSection('nilai')">
+
+                      <i class="fas fa-edit mb-2 d-block"></i>
+
+                      Input Nilai
+
+                    </button>
+
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <button class="btn btn-outline-primary w-100 py-3" onclick="switchSection('jadwal')">
+
+                      <i class="fas fa-calendar-alt mb-2 d-block"></i>
+
+                      Jadwal
+
+                    </button>
+
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <button class="btn btn-outline-secondary w-100 py-3" onclick="switchSection('bimbingan')">
+
+                      <i class="fas fa-users mb-2 d-block"></i>
+
+                      Bimbingan
+
+                    </button>
 
                   </div>
 
                 </div>
 
               </div>
-            </div>
 
-            <!-- PENGUMUMAN -->
-
-            <div class="alert alert-info border-0 shadow-sm mt-4" style="border-radius: 10px;">
-              <i class="fas fa-info-circle me-2"></i>
-
-              <strong>Pengumuman:</strong>
-
-              Batas akhir pengisian nilai UAS adalah tanggal 30 Juni 2026.
             </div>
 
           </div>
 
-          <!-- KANAN -->
+          <!-- MATA KULIAH -->
 
-          <div class="col-lg-4">
+          <div class="col-12">
 
-            <div class="stat-card bg-ungu mb-4">
+            <div class="card dashboard-card">
 
-              <div class="title">
-                Total Mata Kuliah Diampu
-              </div>
+              <div class="card-body">
 
-              <div class="number" id="stat-total-mk">
-                0
-              </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
 
-              <div class="icon">
-                <i class="fas fa-book-open"></i>
-              </div>
+                  <div class="dashboard-section-title">
+                    Mata Kuliah Diampu
+                  </div>
 
-            </div>
+                  <button class="btn btn-sm btn-primary" onclick="switchSection('jadwal')">
 
-            <div class="stat-card bg-hijau">
+                    Lihat Semua
 
-              <div class="title">
-                Total Mahasiswa Diajar
-              </div>
+                  </button>
 
-              <div class="number" id="stat-total-mhs">
-                0
-              </div>
+                </div>
 
-              <div class="icon">
-                <i class="fas fa-users"></i>
+                <div id="dashboard-mk-list">
+
+                </div>
+
               </div>
 
             </div>
@@ -504,7 +663,7 @@
                   </tbody>
 
                 </table>
-              
+
 
               </div>
 
@@ -575,6 +734,153 @@
 
       </div>
 
+
+      <!-- PROFIL DOSEN -->
+
+      <div id="section-profil" class="content-section">
+
+        <div class="row g-4">
+
+          <!-- BIODATA -->
+
+          <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm" style="border-radius:16px;">
+
+              <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+
+                <h5 class="fw-bold mb-0">
+                  <i class="fas fa-user text-primary me-2"></i>
+                  Biodata Dosen
+                </h5>
+
+                <button class="btn btn-primary btn-sm" id="btn-edit-profil">
+                  <i class="fas fa-pen me-2"></i>
+                  Edit Profil
+                </button>
+
+              </div>
+
+              <div class="card-body">
+
+                <form id="form-edit-profil">
+
+                  <div class="row g-3">
+
+                    <div class="col-md-6">
+                      <label class="form-label">NIDN</label>
+                      <input type="text" class="form-control" id="profil-nidn" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Nama Dosen</label>
+                      <input type="text" class="form-control profil-input" id="profil-nama" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-control profil-input" id="profil-email" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">No HP</label>
+                      <input type="text" class="form-control profil-input" id="profil-hp" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">Jenis Kelamin</label>
+
+                      <select class="form-select profil-input" id="profil-jk" disabled>
+                        <option value="Laki-Laki">Laki-Laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label">Alamat</label>
+
+                      <textarea class="form-control profil-input" rows="3" id="profil-alamat" readonly></textarea>
+                    </div>
+
+                  </div>
+
+                  <!-- TOMBOL SIMPAN -->
+
+                  <div class="text-end mt-4 d-none" id="action-profil">
+
+                    <button type="button" class="btn btn-secondary me-2" id="btn-batal-edit">
+                      Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save me-2"></i>
+                      Simpan Perubahan
+                    </button>
+
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm" style="border-radius:16px;">
+
+              <div class="card-header bg-white py-3">
+
+                <h5 class="fw-bold mb-0">
+                  <i class="fas fa-lock text-primary me-2"></i>
+                  Ganti Password
+                </h5>
+
+              </div>
+
+              <div class="card-body">
+
+                <form id="form-password">
+
+                  <div class="mb-3">
+
+                    <label class="form-label">
+                      Password Baru
+                    </label>
+
+                    <input type="password" class="form-control" id="password-baru" required>
+
+                  </div>
+
+                  <div class="mb-3">
+
+                    <label class="form-label">
+                      Konfirmasi Password
+                    </label>
+
+                    <input type="password" class="form-control" id="konfirmasi-password" required>
+
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-100">
+
+                    <i class="fas fa-save me-2"></i>
+                    Simpan Password
+
+                  </button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
     </div>
 
   </div>
@@ -598,10 +904,11 @@
         .classList.add('active');
 
       const titles = {
-        dashboard: 'Dashboard Dosen',
+        dashboard: 'Selamat Datang, Bapak/Ibu Dosen',
         jadwal: 'Jadwal Mengajar',
         nilai: 'Input Nilai Mahasiswa',
-        bimbingan: 'Mahasiswa Bimbingan'
+        bimbingan: 'Mahasiswa Bimbingan',
+        profil: 'Profil Dosen'
       };
 
       document.getElementById('main-header-title').innerText =
@@ -610,6 +917,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       loadDataAwalDosen();
+      loadProfilDosen();
     });
 
     function loadDataAwalDosen() {
@@ -652,6 +960,9 @@
             isiTabelJadwal(result.data);
 
             isiDropdownNilai(result.data);
+
+            isiDashboardMK(result.data);
+
           }
 
         })
@@ -663,6 +974,46 @@
       loadMahasiswaBimbingan();
     }
 
+
+    function isiDashboardMK(data) {
+
+      const container =
+        document.getElementById("dashboard-mk-list");
+
+      container.innerHTML = "";
+
+      data.slice(0, 5).forEach(mk => {
+
+        container.innerHTML += `
+
+<div class="border rounded-4 p-3 mb-3 d-flex justify-content-between align-items-center">
+
+  <div>
+
+    <div class="fw-bold">
+      ${mk.nama_mk}
+    </div>
+
+    <div class="text-muted small">
+      ${mk.hari} • 
+      ${mk.jam_mulai.substring(0, 5)} -
+      ${mk.jam_selesai.substring(0, 5)}
+    </div>
+
+  </div>
+
+  <span class="badge bg-primary px-3 py-2">
+    ${mk.sks} SKS
+  </span>
+
+</div>
+
+`;
+
+      });
+
+    }
+
     function isiTabelJadwal(data) {
 
       const tbody = document.getElementById('tbody-jadwal-dosen');
@@ -672,31 +1023,32 @@
       data.forEach(jadwal => {
 
         tbody.innerHTML += `
-        
-          <tr>
+    
+      <tr>
 
-            <td>${jadwal.hari}</td>
+        <td>${jadwal.hari}</td>
 
-            <td>
-              ${jadwal.jam_mulai.substring(0, 5)}
-              -
-              ${jadwal.jam_selesai.substring(0, 5)}
-            </td>
+        <td>
+          ${jadwal.jam_mulai.substring(0, 5)}
+          -
+          ${jadwal.jam_selesai.substring(0, 5)}
+        </td>
 
-            <td>
-              <div class="fw-bold">${jadwal.nama_mk}</div>
-              <small class="text-muted">${jadwal.kode_mk}</small>
-            </td>
+        <td>
+          <div class="fw-bold">${jadwal.nama_mk}</div>
+          <small class="text-muted">${jadwal.kode_mk}</small>
+        </td>
 
-            <td>${jadwal.sks} SKS</td>
+        <td>${jadwal.sks} SKS</td>
 
-            <td class="text-end">
-              ${jadwal.ruangan}
-            </td>
+        <td class="text-end">
+          ${jadwal.ruangan}
+        </td>
 
-          </tr>
+      </tr>
 
-        `;
+    `;
+
       });
 
     }
@@ -779,47 +1131,48 @@
 
               tbody.innerHTML += `
 
-          <tr>
+<tr>
 
-            <td class="fw-bold text-secondary">
-              ${mhs.nim}
-            </td>
+  <td class="fw-bold text-secondary">
+    ${mhs.nim}
+  </td>
 
-            <td class="fw-bold text-dark">
-              ${mhs.nama_mhs}
-            </td>
+  <td class="fw-bold text-dark">
+    ${mhs.nama_mhs}
+  </td>
 
-            <td class="text-center">
+  <td class="text-center">
 
-              <input 
-                type="hidden"
-                name="id_mhs[]"
-                value="${mhs.id_mhs}"
-              >
+    <input 
+      type="hidden"
+      name="id_krs[]"
+      value="${mhs.id_krs}"
+    >
 
-              <input 
-                type="number"
-                name="nilai[]"
-                class="form-control"
-                min="0"
-                max="100"
-                placeholder="0 - 100"
-                oninput="updateGrade(this)"
-              >
+    <input 
+      type="number"
+      name="nilai[]"
+      class="form-control"
+      min="0"
+      max="100"
+      value="${mhs.nilai_akhir ? mhs.nilai_akhir : ''}"
+      placeholder="0 - 100"
+      oninput="updateGrade(this)"
+    >
 
-            </td>
+  </td>
 
-            <td class="text-center">
+  <td class="text-center">
 
-              <span class="badge bg-primary grade-text">
-                -
-              </span>
+    <span class="badge bg-primary grade-text">
+      ${mhs.huruf_mutu ? mhs.huruf_mutu : '-'}
+    </span>
 
-            </td>
+  </td>
 
-          </tr>
+</tr>
 
-          `;
+`;
 
             });
 
@@ -870,11 +1223,41 @@
         });
 
     }
+
+    function loadProfilDosen() {
+
+      fetch("api/get_profil_dosen.php")
+
+        .then(res => res.json())
+
+        .then(result => {
+
+          if (result.status === "success") {
+
+            const d = result.data;
+
+            document.getElementById('profil-nidn').value = d.nidn;
+            document.getElementById('profil-nama').value = d.nama_dosen;
+            document.getElementById('profil-email').value = d.email;
+            document.getElementById('profil-hp').value = d.no_hp;
+            document.getElementById('profil-jk').value = d.jenis_kelamin;
+            document.getElementById('profil-alamat').value = d.alamat;
+
+          }
+
+        });
+
+    }
     document.addEventListener("submit", function (e) {
 
       if (e.target.id === "form-input-nilai") {
 
         e.preventDefault();
+
+        // ✅ POPUP KONFIRMASI
+        if (!confirm("Yakin ingin menyimpan nilai ke database?")) {
+          return;
+        }
 
         const formData = new FormData(e.target);
 
@@ -882,16 +1265,186 @@
           method: "POST",
           body: formData
         })
+          .then(res => res.json())
+          .then(result => {
+
+            console.log(result);
+
+            alert(result.message);
+            loadProfilDosen();
+            loadDataAwalDosen();
+
+
+            // optional: reload data setelah simpan
+            // loadMahasiswaNilai(document.getElementById('dropdown-mk-nilai').value);
+
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Terjadi kesalahan saat menyimpan data");
+          });
+
+      }
+
+    });
+
+    document.getElementById("form-edit-profil")
+      .addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append(
+          "nama",
+          document.getElementById("profil-nama").value
+        );
+
+        formData.append(
+          "email",
+          document.getElementById("profil-email").value
+        );
+
+        formData.append(
+          "hp",
+          document.getElementById("profil-hp").value
+        );
+
+        formData.append(
+          "jk",
+          document.getElementById("profil-jk").value
+        );
+
+        formData.append(
+          "alamat",
+          document.getElementById("profil-alamat").value
+        );
+
+        fetch("api/update_profil_dosen.php", {
+          method: "POST",
+          body: formData
+        })
 
           .then(res => res.json())
 
           .then(result => {
-
             alert(result.message);
+            loadProfilDosen();
+            loadDataAwalDosen();
+
+            // balik readonly lagi
+            profilInputs.forEach(input => {
+
+              if (input.tagName === "SELECT") {
+                input.disabled = true;
+              } else {
+                input.setAttribute("readonly", true);
+              }
+
+            });
+
+            actionProfil.classList.add("d-none");
+
+            btnEditProfil.classList.remove("d-none");
 
           });
 
-      }
+      });
+
+    const formPassword = document.getElementById("form-password");
+
+    if (formPassword) {
+
+      formPassword.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const pass =
+          document.getElementById("password-baru").value;
+
+        const confirmPass =
+          document.getElementById("konfirmasi-password").value;
+
+        if (pass !== confirmPass) {
+          alert("Konfirmasi password tidak cocok");
+          return;
+        }
+
+        const formData = new FormData();
+
+        formData.append("password", pass);
+
+        fetch("api/update_password_dosen.php", {
+          method: "POST",
+          body: formData
+        })
+
+          .then(res => res.json())
+
+          .then(result => {
+            alert(result.message);
+
+            formPassword.reset();
+          });
+
+      });
+
+    }
+
+    // ===========================
+    // TOGGLE EDIT PROFIL
+    // ===========================
+
+    const btnEditProfil =
+      document.getElementById("btn-edit-profil");
+
+    const btnBatalEdit =
+      document.getElementById("btn-batal-edit");
+
+    const actionProfil =
+      document.getElementById("action-profil");
+
+    const profilInputs =
+      document.querySelectorAll(".profil-input");
+
+    // KLIK EDIT
+    btnEditProfil.addEventListener("click", function () {
+
+      profilInputs.forEach(input => {
+
+        if (input.tagName === "SELECT") {
+          input.disabled = false;
+        } else {
+          input.removeAttribute("readonly");
+        }
+
+      });
+
+      actionProfil.classList.remove("d-none");
+
+      btnEditProfil.classList.add("d-none");
+
+    });
+
+    // KLIK BATAL
+    btnBatalEdit.addEventListener("click", function () {
+
+      profilInputs.forEach(input => {
+
+        if (input.tagName === "SELECT") {
+          input.disabled = true;
+        } else {
+          input.setAttribute("readonly", true);
+        }
+
+      });
+
+      actionProfil.classList.add("d-none");
+
+      btnEditProfil.classList.remove("d-none");
+
+      // reload data asli
+      loadProfilDosen();
 
     });
   </script>
