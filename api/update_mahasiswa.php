@@ -35,8 +35,8 @@ try {
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
         $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
         $foto = "mhs_" . $nim . "_" . time() . "." . $ext;
-        // Disesuaikan dengan struktur folder di gambarmu: aset/foto
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../aset/foto/" . $foto);
+        
+        move_uploaded_file($_FILES['foto']['tmp_name'], "../foto/" . $foto);
     }
 
     $tgl_lahir_val = $tanggal_lahir ? "'$tanggal_lahir'" : "NULL";

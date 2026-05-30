@@ -14,7 +14,6 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'dosen') {
 
 $id_user = $_SESSION['id_user'];
 
-// Ambil id_dosen berdasarkan user login
 $getDosen = $conn->query("
     SELECT id_dosen
     FROM dosen
@@ -23,9 +22,7 @@ $getDosen = $conn->query("
 
 $dosen = $getDosen->fetch_assoc();
 
-$id_dosen = $dosen['id_dosen'];
 
-// Ambil mahasiswa bimbingan
 $query = "
 SELECT
     nim,

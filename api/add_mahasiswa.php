@@ -9,7 +9,6 @@ if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
 header('Content-Type: application/json');
 include 'koneksi.php';
 
-// 1. Tangkap semua data
 $nim = $_POST['nim'] ?? '';
 $nama_mhs = $_POST['nama_mhs'] ?? '';
 $email = $_POST['email'] ?? '';
@@ -18,7 +17,7 @@ $tempat_lahir = $_POST['tempat_lahir'] ?? '';
 $tanggal_lahir = $_POST['tanggal_lahir'] ?? '';
 $semester = $_POST['semester'] ?? '';
 $fakultas = $_POST['fakultas'] ?? '';
-$jurusan = $_POST['jurusan'] ?? ''; // <-- Tambahan Jurusan
+$jurusan = $_POST['jurusan'] ?? '';
 $prodi = $_POST['prodi'] ?? '';
 
 if(empty($nim) || empty($nama_mhs)) {
@@ -26,19 +25,16 @@ if(empty($nim) || empty($nama_mhs)) {
     exit;
 }
 
-// 2. Logika bikin password otomatis
 $nama_depan = strtolower(explode(' ', trim($nama_mhs))[0]);
 $tiga_angka_nim = substr($nim, -3);
 $password = $nama_depan . $tiga_angka_nim;
 $role = 'mahasiswa';
 
-// 3. Insert ke database
 $query_user = "INSERT INTO users (username, password, role) VALUES ('$nim', '$password', '$role')";
 
 if ($conn->query($query_user) === TRUE) {
     $id_user = $conn->insert_id;
 
-    // Foto otomatis 'default.jpg' dan IPK otomatis 0.00
     $query_mhs = "INSERT INTO mahasiswa (id_user, nim, nama_mhs, email, jenis_kelamin, tempat_lahir, tanggal_lahir, semester, fakultas, jurusan, prodi, ipk, foto) 
                   VALUES ('$id_user', '$nim', '$nama_mhs', '$email', '$jenis_kelamin', '$tempat_lahir', '$tanggal_lahir', '$semester', '$fakultas', '$jurusan', '$prodi', 0.00, 'default.jpg')";
     

@@ -501,20 +501,16 @@
         renderTable();
       };
 
-      // FUNGSI CHECKBOX ALL
       window.toggleAllCheckboxes = function(source) {
         const checkboxes = document.querySelectorAll('.check-item');
         checkboxes.forEach(cb => cb.checked = source.checked);
       };
 
-      // POPUP DETAIL
       window.bukaModalDetail = function (nim) {
         const mhs = dataMahasiswa.find((m) => m.nim === nim);
         if (mhs) {
-          // Update sumber foto dinamis
           const pathFoto = mhs.foto ? "foto/" + mhs.foto : "foto/default.jpg";
           document.getElementById("detail_foto").src = pathFoto;
-
           document.getElementById("detail_nama").innerText = mhs.nama_mhs;
           document.getElementById("detail_nim").innerText = mhs.nim;
           document.getElementById("detail_prodi").innerText = mhs.prodi || "-";
@@ -528,8 +524,7 @@
           new bootstrap.Modal(document.getElementById("modalDetail")).show();
         }
       };
-
-      // TAMBAH DATA DENGAN SWEETALERT
+  
       document.getElementById("formTambah").addEventListener("submit", function (e) {
           e.preventDefault();
           const formData = new FormData(this);
@@ -553,7 +548,6 @@
             .catch((err) => Swal.fire('Error', 'Terjadi kesalahan saat menambah data.', 'error'));
         });
 
-      // EDIT DATA
       window.bukaModalEdit = function (nim) {
         const mhs = dataMahasiswa.find((m) => m.nim === nim);
         if (mhs) {
@@ -592,7 +586,6 @@
             .catch((err) => Swal.fire('Error', 'Terjadi kesalahan sistem saat mengupdate data.', 'error'));
         });
 
-      // HAPUS 1 DATA
       window.hapusSatuMahasiswa = function (nim) {
         Swal.fire({
           title: 'Hapus Data?',
@@ -620,7 +613,6 @@
         });
       };
 
-      // HAPUS BANYAK CHECKLIST
       window.hapusBanyak = function() {
         const checkedItems = document.querySelectorAll('.check-item:checked');
         if(checkedItems.length === 0) {
@@ -638,7 +630,7 @@
           confirmButtonText: 'Hapus Semua Terpilih'
         }).then((result) => {
           if (result.isConfirmed) {
-            // Karena belum ada API khusus hapus jamak, kita fetch berulang 
+ 
             let promises = Array.from(checkedItems).map(cb => {
                 let fd = new FormData(); fd.append('nim', cb.value);
                 return fetch("api/delete_mahasiswa.php", { method: "POST", body: fd});
@@ -652,7 +644,6 @@
         });
       };
 
-      // LOGOUT SWEETALERT
       window.logoutSystem = function() {
         Swal.fire({
             title: 'Konfirmasi Logout',

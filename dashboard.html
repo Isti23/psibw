@@ -391,7 +391,6 @@
           })
           .catch((error) => console.error("Error load mahasiswa:", error));
 
-        // 2. Fetch Data Dosen
         fetch("api/get_dosen.php")
           .then((response) => response.json())
           .then((res) => {
@@ -414,17 +413,13 @@
           })
           .catch((error) => console.error("Error load dosen:", error));
 
-        // 3. Fetch Data Matakuliah (INI YANG BARU DITAMBAHIN)
         fetch("api/get_matakuliah.php")
           .then((response) => response.json())
           .then((res) => {
-            // Sesuaikan ID ini dengan ID <tbody> di tabel matakuliah dashboard-mu
             const tbodyMk = document.getElementById("tbody-mk-dashboard");
             if (tbodyMk) tbodyMk.innerHTML = "";
 
             const listMatkul = res.data ? res.data : res;
-
-            // Pastikan id "total-mk" ada di HTML card atas kamu
             const totalMkEl = document.getElementById("total-mk");
             if (totalMkEl) totalMkEl.innerText = listMatkul.length;
 
@@ -441,21 +436,11 @@
       });
 
       document.addEventListener("DOMContentLoaded", function () {
-        // 1. Ambil nama file dari URL saat ini (contoh: "matakuliah.html")
         let currentLocation = window.location.pathname.split("/").pop();
-
-        // Jika path kosong (hanya localhost/siakad/), set default ke dashboard
         if (currentLocation === "") currentLocation = "dashboard.html";
-
-        // 2. Ambil semua elemen link di dalam menu sidebar
         const navLinks = document.querySelectorAll(".nav-menu .nav-link");
-
-        // 3. Looping untuk mengecek satu-satu
         navLinks.forEach((link) => {
-          // Ambil isi dari atribut href (misal: "mahasiswa.html")
           const linkHref = link.getAttribute("href");
-
-          // Jika href cocok dengan URL saat ini, tambahkan class 'active'
           if (linkHref === currentLocation) {
             link.classList.add("active");
           }

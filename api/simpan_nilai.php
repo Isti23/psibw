@@ -1,19 +1,15 @@
 <?php
 
 header('Content-Type: application/json');
-
 include "koneksi.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     $id_krs = $_POST['id_krs'];
     $nilai = $_POST['nilai'];
 
     for ($i = 0; $i < count($id_krs); $i++) {
-
         $idkrs = $id_krs[$i];
         $nilaimhs = intval($nilai[$i]);
-
         if ($nilaimhs >= 85) {
             $grade = "A";
         } elseif ($nilaimhs >= 80) {

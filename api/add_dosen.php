@@ -17,27 +17,21 @@ if (empty($nidn) || empty($nama)) {
 $conn->begin_transaction();
 
 try {
-    // Pengecekan apakah NIDN sudah terdaftar
     $cek = $conn->query("SELECT nidn FROM dosen WHERE nidn = '$nidn'");
     if ($cek->num_rows > 0) {
         throw new Exception("NIDN sudah terdaftar di sistem!");
     }
-
-    // Membuat password otomatis: nama depan (lowercase) + 3 digit terakhir NIDN
     $nama_depan = strtolower(explode(' ', trim($nama))[0]);
     $tiga_digit_nidn = substr($nidn, -3);
     $password_otomatis = $nama_depan . $tiga_digit_nidn;
 
-    // 1. Insert ke tabel users
     $sql_user = "INSERT INTO users (username, password, role) VALUES ('$nidn', '$password_otomatis', 'dosen')";
     if (!$conn->query($sql_user)) {
         throw new Exception("Gagal membuat akun user dosen.");
     }
-    
-    // Ambil id_user yang barusan terbuat
+
     $id_user = $conn->insert_id;
 
-    // 2. Insert ke tabel dosen
     $sql_dosen = "INSERT INTO dosen (id_user, nidn, nama_dosen, email, no_hp, jenis_kelamin, alamat, foto) 
                   VALUES ('$id_user', '$nidn', '$nama', '$email', '$no_hp', '$jenis_kelamin', '$alamat', 'default.jpg')";
                   

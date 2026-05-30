@@ -1097,7 +1097,6 @@
         if (e.target.id === "form-input-nilai") {
           e.preventDefault();
 
-          // ✅ POPUP KONFIRMASI
           if (!confirm("Yakin ingin menyimpan nilai ke database?")) {
             return;
           }
@@ -1116,8 +1115,6 @@
               loadProfilDosen();
               loadDataAwalDosen();
 
-              // optional: reload data setelah simpan
-              // loadMahasiswaNilai(document.getElementById('dropdown-mk-nilai').value);
             })
             .catch((err) => {
               console.error(err);
@@ -1160,7 +1157,6 @@
               loadProfilDosen();
               loadDataAwalDosen();
 
-              // balik readonly lagi
               profilInputs.forEach((input) => {
                 if (input.tagName === "SELECT") {
                   input.disabled = true;
@@ -1175,30 +1171,25 @@
             });
         });
 
-      // ===========================
-      // MODAL GANTI PASSWORD
-      // ===========================
+
       const formPasswordModal = document.getElementById("form-password-modal");
       if (formPasswordModal) {
         formPasswordModal.addEventListener("submit", function (e) {
-          e.preventDefault(); // Mencegah form loading/refresh
+          e.preventDefault(); 
 
           const passLama = document.getElementById("password-lama-modal").value;
           const passBaru = document.getElementById("password-baru-modal").value;
           const confirmPass = document.getElementById("konfirmasi-password-modal").value;
 
-          // CEK BUG 2: Hentikan kalau password baru & konfirmasi tidak sama
           if (passBaru !== confirmPass) {
             alert("Gagal: Konfirmasi password baru tidak cocok!");
-            return; // Hentikan proses, jangan kirim ke PHP
+            return; 
           }
 
-          // Siapkan data untuk PHP
           const formData = new FormData();
           formData.append("password_lama", passLama);
           formData.append("password_baru", passBaru);
 
-          // Kirim ke PHP
           fetch("api/update_password.php", {
             method: "POST",
             body: formData,
@@ -1207,11 +1198,9 @@
             .then((result) => {
               if (result.status === 'success') {
                   alert(result.message);
-                  formPasswordModal.reset(); // Kosongkan form
-                  // Tutup modal
+                  formPasswordModal.reset();
                   bootstrap.Modal.getInstance(document.getElementById('modalGantiPassword')).hide();
               } else {
-                  // Tampilkan error dari PHP (misal: password lama salah)
                   alert("Gagal: " + result.message);
               }
             })
@@ -1221,19 +1210,12 @@
             });
         });
       }
-      // ===========================
-      // TOGGLE EDIT PROFIL
-      // ===========================
 
       const btnEditProfil = document.getElementById("btn-edit-profil");
-
       const btnBatalEdit = document.getElementById("btn-batal-edit");
-
       const actionProfil = document.getElementById("action-profil");
-
       const profilInputs = document.querySelectorAll(".profil-input");
 
-      // KLIK EDIT
       btnEditProfil.addEventListener("click", function () {
         profilInputs.forEach((input) => {
           if (input.tagName === "SELECT") {
@@ -1248,7 +1230,6 @@
         btnEditProfil.classList.add("d-none");
       });
 
-      // KLIK BATAL
       btnBatalEdit.addEventListener("click", function () {
         profilInputs.forEach((input) => {
           if (input.tagName === "SELECT") {
@@ -1262,7 +1243,6 @@
 
         btnEditProfil.classList.remove("d-none");
 
-        // reload data asli
         loadProfilDosen();
       });
     </script>

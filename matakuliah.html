@@ -397,7 +397,6 @@
           });
       }
 
-      // 2. Render Tabel (Sekarang tanpa tombol Hapus)
       function renderTable() {
         const tbody = document.getElementById("tbody-mk-full");
         tbody.innerHTML = "";
@@ -546,28 +545,19 @@
         });
 
       document.addEventListener("DOMContentLoaded", function () {
-        // 1. Ambil nama file dari URL saat ini (contoh: "matakuliah.html")
         let currentLocation = window.location.pathname.split("/").pop();
-
-        // Jika path kosong (hanya localhost/siakad/), set default ke dashboard
         if (currentLocation === "") currentLocation = "dashboard.html";
 
-        // 2. Ambil semua elemen link di dalam menu sidebar
         const navLinks = document.querySelectorAll(".nav-menu .nav-link");
-
-        // 3. Looping untuk mengecek satu-satu
         navLinks.forEach((link) => {
-          // Ambil isi dari atribut href (misal: "mahasiswa.html")
           const linkHref = link.getAttribute("href");
-
-          // Jika href cocok dengan URL saat ini, tambahkan class 'active'
           if (linkHref === currentLocation) {
             link.classList.add("active");
           }
         });
       });
 
-      // Fitur hapusMatkul sudah dihapus sepenuhnya dari sini
+  
     </script>
   </body>
 </html>
