@@ -1,4 +1,3 @@
-<!-- ========================= biodata_mhs.html ========================= -->
 <!doctype html>
 <html lang="id">
   <head>
@@ -452,6 +451,16 @@
               <label>Email</label>
               <p id="detail-email"></p>
             </div>
+
+            <div>
+              <label>No. Handphone</label>
+              <p id="no_hp">-</p>
+            </div>
+
+            <div>
+              <label>Alamat Lengkap</label>
+              <p id="alamat">-</p>
+            </div>
           </div>
         </div>
       </div>
@@ -504,6 +513,12 @@
 
             document.getElementById("jenis_kelamin").innerText =
               mhs.jenis_kelamin || "-";
+
+            document.getElementById("no_hp").innerText = 
+              mhs.no_hp || "-";
+
+            document.getElementById("alamat").innerText = 
+              mhs.alamat || "-";
 
             if (mhs.nim) {
               document.getElementById("angkatan").innerText =

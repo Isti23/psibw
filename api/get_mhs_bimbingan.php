@@ -21,7 +21,7 @@ $getDosen = $conn->query("
 ");
 
 $dosen = $getDosen->fetch_assoc();
-
+$id_dosen = $dosen['id_dosen'];
 
 $query = "
 SELECT
